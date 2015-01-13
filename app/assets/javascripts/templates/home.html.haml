@@ -1,16 +1,34 @@
 .container(ng-controller="HomeController")
-  %nav.navbar.navbar-static-top.navbar-inverse(role="navigation")
-    .container-fluid
-      .navbar-header.pull-left
-        %a.navbar-brand(href="#")
-          =image_tag "logo.png", height: '20'
-          Refinder
-  #main
-    .row
-      .col-sm-6
-        .search_input
-          %input#search_control.form-control(type="search" placeholder="Search" ng-change="handle_search_criteria_change()" ng-model="criteria.criteria_text")
-          %span.glyphicon.glyphicon-search(ng-click="handle_search_button_click()")
-      .col-sm-6
-        %h1#second_page_title Second page!
-        %p This is the second page.
+  .jumbotron(style="background-size: cover;margin-top: 20px; margin-bottom: 40px; height: 486px; background-image: url('assets/jumbo.jpg;'); padding-top: 320px;")
+    %h1.title(style="margin-bottom: 5px;") Taivalvaara Sprint
+    %h2.title2.hidden-sm.hidden-xs(style="margin-top: 5px;") SM S4, SP4j, SP8, koirahiihto, yhdistetty 7.-8.3.2015
+    %p
+      %span Ookko nää kunnossa?
+      %span.btn.btn-primary.btn-lg(href="#" role="button") Ilimottaudu nyt!
+  .row
+    .col-sm-8
+      %ul.nav.nav-pills(style="margin-bottom: 40px;")
+        %li.active(role="presentation")
+          %a Kilpailu
+        %li(role="presentation")
+          %a Ohjelma ja aikataulu
+        %li(role="presentation")
+          %a Lähtölista
+        %li(role="presentation")
+          %a Taivalkoski
+        %li(role="presentation")
+          %a Tapahtumapaikka
+      %p Kilpailu tapahtu taivalvaara hiihtostadionissa 7.-8. maaliskuussa.
+      %p Ilmotadutteet vimeistan joku paiva.
+      %p Muos lasten categoriaat..
+      %p Tukkaa fejsbukissa! Lahetta ustaville sahkopostille!
+    .col-xs-4
+      %div
+        %a Vetdog
+      %div
+        %a NonStop
+      %div
+        %a Ouluvet
+      %div
+        %a Z-Ware
+  
