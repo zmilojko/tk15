@@ -1,0 +1,3 @@
+[submodule "vendor/zwr-gem"]
+	path = vendor/zwr-gem
+	url = git@github.com:zmilojko/zwr-gem.git
