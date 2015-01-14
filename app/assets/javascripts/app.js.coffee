@@ -20,11 +20,23 @@
 
 @tk15_module.config(['$routeProvider', ($routeProvider) ->
   $routeProvider.
-    #when('/url', {
-    #  templateUrl: 'template.html',
-    #}).
-    otherwise({
+    when('/', {
       templateUrl: 'home.html',
+    }).
+    when('/program', {
+      templateUrl: 'program.html',
+    }).
+    when('/startlist', {
+      templateUrl: 'startlist.html',
+    }).
+    when('/taivalkoski', {
+      templateUrl: 'taivalkoski.html',
+    }).
+    when('/stadion', {
+      templateUrl: 'stadion.html',
+    }).
+    otherwise({
+      templateUrl: '404.html',
     }) 
 ])
 

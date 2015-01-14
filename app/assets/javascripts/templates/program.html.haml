@@ -1,0 +1,10 @@
+.container(ng-controller="HomeController" zt-full-size)
+  .minitron
+    %h1 Ohjelma ja Aikataulu
+  .row
+    .col-sm-8
+      = Haml::Engine.new(File.read("app/assets/javascripts/templates/menu.html.haml")).render
+      %p Tassa onglema
+      %p suklaa kalija
+    .col-sm-4
+      = Haml::Engine.new(File.read("app/assets/javascripts/templates/sponsors.html.haml")).render

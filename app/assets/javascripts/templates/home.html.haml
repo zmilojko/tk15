@@ -1,7 +1,7 @@
-.container(ng-controller="HomeController")
-  .jumbotron(style="background-size: cover;margin-top: 20px; margin-bottom: 40px; height: 486px; background-image: url('assets/jumbo.jpg'); padding-top: 320px;")
-    %h1.title(style="margin-bottom: 5px;") Taivalvaara Sprint
-    %h2.title2.hidden-sm.hidden-xs(style="margin-top: 5px;") SM S4, SP4j, SP8, koirahiihto, yhdistetty 7.-8.3.2015
+.container(ng-controller="HomeController" zt-full-size)
+  .jumbotron
+    %h1.title Taivalvaara Sprint
+    %h2.title2.hidden-sm.hidden-xs SM S4, SP4j, SP8, koirahiihto, yhdistetty 7.-8.3.2015
     %p
       %span Ookko nää kunnossa?
       %span.btn.btn-primary.btn-lg(href="#" role="button") Ilimottaudu nyt!
@@ -13,13 +13,4 @@
       %p Muos lasten categoriaat..
       %p Tukkaa fejsbukissa! Lahetta ustaville sahkopostille!
     .col-sm-4
-      %div(style="margin-bottom: 10px;")
-        %a(href="http://vetdog.fi")
-          %img(src="assets/vetdog.png" style="width: 100%")
-      %div(style="margin-bottom: 10px;")
-        %a(href="http://www.non-stopdogwear.fi/")
-          %img(src="assets/nonstop.png" style="width: 100%")
-      %div(style="margin-bottom: 10px;")
-        %a(href="http://www.non-http://www.kolmiloukko.com/suomi/")
-          %img(src="assets/kolmi.png" style="width: 100%")
-
+      = Haml::Engine.new(File.read("app/assets/javascripts/templates/sponsors.html.haml")).render
