@@ -16,6 +16,7 @@
   'templates',
   'ui.bootstrap',
   'LocalStorageModule',
+  'multi-select',
   ])
 
 @tk15_module.config(['$routeProvider', ($routeProvider) ->
@@ -34,6 +35,9 @@
     }).
     when('/stadion', {
       templateUrl: 'stadion.html',
+    }).
+    when('/apply', {
+      templateUrl: 'apply.html',
     }).
     otherwise({
       templateUrl: '404.html',
