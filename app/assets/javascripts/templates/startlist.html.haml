@@ -4,6 +4,12 @@
   .row
     .col-sm-8
       = Haml::Engine.new(File.read("app/assets/javascripts/templates/menu.html.haml")).render
-      %p Tassa tule lahdälista kuin kaikki on ilmoitaudettu
+      %p Lähtölista julkistetaan tällä sivulla, kun kaikki ilmoittautumiset on käsitelty.
+      %hr
+      %p Ookko nää kunnossa?
+      %p
+        %a(href="/#/apply")
+          %span.btn.btn-primary.btn-lg(href="#" role="button") Ilimottaudu nyt!
+
     .col-sm-4
       = Haml::Engine.new(File.read("app/assets/javascripts/templates/sponsors.html.haml")).render

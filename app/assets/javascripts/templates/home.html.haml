@@ -9,9 +9,8 @@
   .row
     .col-sm-8
       = Haml::Engine.new(File.read("app/assets/javascripts/templates/menu.html.haml")).render
-      %p Kilpailu tapahtu taivalvaara hiihtostadionissa 7.-8. maaliskuussa.
-      %p Ilmotadutteet vimeistan joku paiva.
-      %p Muos lasten categoriaat..
-      %p Tukkaa fejsbukissa! Lahetta ustaville sahkopostille!
+      %h3 Tervetuloa nauttimaan koiravaljakkokilpailuista kauniissa ympäristössä Taivalkoskelle! 
+      %p Taivalvaaran uudistettu hiihtostadion tarjoaa sprinttikisoille upeat puitteet- tule koko perheen kanssa! 
+      %strong Lapsille oma sarja/kilpailu!
     .col-sm-4
       = Haml::Engine.new(File.read("app/assets/javascripts/templates/sponsors.html.haml")).render
