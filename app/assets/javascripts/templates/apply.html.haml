@@ -1,6 +1,6 @@
 .container(ng-controller="HomeController" zt-full-size)
   .minitron
-    %h1 Ilmoitaudu tassa
+    %h1 Ilmoittaudu tässä
   .row
     .col-sm-8
       = Haml::Engine.new(File.read("app/assets/javascripts/templates/menu.html.haml")).render
@@ -8,25 +8,25 @@
         .col-xs-12.col-lg-8.col-lg-offset-1.col-md-10.col-md-offset-1
           %form
             .form-group
-              %label(for="exampleInputEmail1")Name
+              %label(for="exampleInputEmail1")Nimi
               %input.form-control(type="email" id="exampleInputEmail1" placeholder="Enter name")
             .form-group
-              %label(for="exampleInputEmail1")Email
+              %label(for="exampleInputEmail1")Sähköposti
               %input.form-control(type="email" id="exampleInputEmail1" placeholder="Enter email")
             .form-group
               -# Many thanks to http://isteven.github.io/angular-multi-select/
-              %label(for="races")Competitions
+              %label(for="races")Sarja
               #races(multi-select input-model="modernWebBrowsers" button-label="name" item-label="name desc" tick-property="selected" helper-elements="" default-label="Click here to select competitions" output-model="selectedRaces")
             .form-group
-              %label(for="exampleInputEmail1")Club
+              %label(for="exampleInputEmail1")Seura
               %input.form-control(type="email" id="exampleInputEmail1" placeholder="Enter club")
             .form-group
-              %label(for="exampleInputFile")Payment receipt
+              %label(for="exampleInputFile")Maksukuitti
               %input(type="file" id="exampleInputFile")
-              %p.help-block You must pay and upload the receipt. We do not trust you!
+              %p.help-block Maksukuitti täytyy lähettää ilmoittautumisen mukana.
             .checkbox
               %label
-                %input(type="checkbox") I understand and accept
+                %input(type="checkbox") Ymmärrän ja hyväksyn
             %button.btn.btn-primary.btn-lg(type="submit" ng-click="submit()" style="float: right;") Let's go! Seriously!
       .clearfix(style="margin-bottom: 36px;")
     .col-sm-4
