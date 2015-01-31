@@ -1,5 +1,5 @@
 @tk15_module.controller 'HomeController', [
-  '$scope', '$location', ($scope, $location) ->
+  '$scope', '$location', '$http', '$timeout', ($scope, $location, $http,$timeout) ->
     $scope.modernWebBrowsers = [
       { name: "Sp4", desc: "Sprint 4 dogs", selected: false  },
       { name: "Sp4J", desc: "Sprint 4 dogs juniors", selected: false  },
@@ -21,6 +21,13 @@
       { name: "Harrastussarja la", desc: "Dog skiing motion class Sat", selected: false  },
       { name: "Harrastussarja su", desc: "Dog skiing motion class Sun", selected: false  },
     ]
+    $scope.alerts = []
+    $scope.closeAlert = (index) ->
+      $scope.alerts.splice(index, 1);
+    $scope.app_form =
+      name: 'zeljko'
+      email: 'zeljko@zwr.fi'
+      club: 'z-ware'
     $scope.raceboxsettings =
       showCheckAll: false
       showUncheckAll: false
@@ -34,4 +41,11 @@
       console.log "Search button clicked"
     $scope.submit = ->
       console.log $scope.selectedRaces
+      $http.post("/apply.json", $scope.app_form)
+      .then (result) ->
+        console.log "Great success! Application: #{result.data.application}"
+        $scope.alerts.push { type: 'success', msg: "Great success! You will soon receive a confirmation by email. Your application number is #{result.data.application.appnum}." }
+      .catch (reason) ->
+        console.log "error: #{JSON.stringify(reason)}"
+        $scope.alerts.push { type: 'danger', msg: 'Oh snap! Something did not go well. If all other fails, try the phone.' }
 ]

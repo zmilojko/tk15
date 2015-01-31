@@ -1,4 +1,5 @@
 .container(ng-controller="HomeController" zt-full-size)
+  %alert(ng-repeat="alert in alerts" type="{{alert.type}}" close="closeAlert($index)") {{alert.msg}}
   .jumbotron
     %h1.title Taivalvaara Sprint
     %h2.title2.hidden-sm.hidden-xs SM S4, SP4j, SP8, koirahiihto, yhdistetty 7.-8.3.2015

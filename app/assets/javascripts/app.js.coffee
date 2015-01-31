@@ -8,7 +8,7 @@
 #= require_tree ./directives
 #= require_tree ./services
 #= require_tree ./controllers
-#= require angular-ui-bootstrap
+#= require angular-ui-bootstrap-tpls
 
 @tk15_module = angular.module('tk15', [
   'ngRoute', 
