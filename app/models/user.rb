@@ -1,5 +1,6 @@
 class User
   include Mongoid::Document
+  # include Mongoid::Paperclip
   # Include default devise modules. Others available are:
   # :confirmable, :lockable, :timeoutable and :omniauthable
   devise :database_authenticatable, :registerable,
@@ -38,4 +39,12 @@ class User
   field :name,      type: String
   field :club,      type: String
   field :appnum,    type: String
+  field :receipt_file,    type: String
+  #has_mongoid_attached_file :receipt
+  #do_not_validate_attachment_file_type :receipt
+  
+  
+  
+  
+  
 end

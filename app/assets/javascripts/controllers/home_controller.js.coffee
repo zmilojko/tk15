@@ -24,10 +24,7 @@
     $scope.alerts = []
     $scope.closeAlert = (index) ->
       $scope.alerts.splice(index, 1);
-    $scope.app_form =
-      name: 'zeljko'
-      email: 'zeljko@zwr.fi'
-      club: 'z-ware'
+    $scope.app_form = {}
     $scope.raceboxsettings =
       showCheckAll: false
       showUncheckAll: false
@@ -46,9 +43,29 @@
       $http.post("/apply.json", $scope.app_form)
       .then (result) ->
         console.log "Great success! Application: #{result.data.application}"
-        $scope.alerts.push { type: 'success', msg: "Great success! You will soon receive a confirmation by email. Your application number is #{result.data.application.appnum}." }
-        $scope.app_form = []
+        $scope.alerts.push { type: 'success', msg: "Ilmoittautuminen onnistui!" }
+        $scope.app_form = {}
       .catch (reason) ->
         console.log "error: #{JSON.stringify(reason)}"
-        $scope.alerts.push { type: 'danger', msg: 'Oh snap! Something did not go well. If all other fails, try the phone.' }
+        if reason.data? and reason.data.reason?
+          $scope.alerts.push { type: 'danger', msg: reason.data.reason }
+        else
+          $scope.alerts.push { type: 'danger', msg: 'Oh snap! Something did not go well. If all other fails, try the phone.' }
 ]
+    #many thanks to http://stackoverflow.com/questions/17063000/ng-model-for-input-type-file
+.directive "fileread", ->
+    ret = 
+      scope:
+        fileread: "="
+      link: (scope, element, attributes) ->
+        element.bind "change", (changeEvent) ->
+          reader = new FileReader()
+          reader.onload = (loadEvent) ->
+            scope.$apply ->
+              scope.fileread = loadEvent.target.result;
+          reader.readAsDataURL(changeEvent.target.files[0]);
+          ###
+          scope.$apply ->
+            scope.fileread = changeEvent.target.files[0]
+          ###
+
