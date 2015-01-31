@@ -41,10 +41,13 @@
       console.log "Search button clicked"
     $scope.submit = ->
       console.log $scope.selectedRaces
+      $scope.app_form.races = []
+      $scope.app_form.races.push race.name for race in $scope.selectedRaces
       $http.post("/apply.json", $scope.app_form)
       .then (result) ->
         console.log "Great success! Application: #{result.data.application}"
         $scope.alerts.push { type: 'success', msg: "Great success! You will soon receive a confirmation by email. Your application number is #{result.data.application.appnum}." }
+        $scope.app_form = []
       .catch (reason) ->
         console.log "error: #{JSON.stringify(reason)}"
         $scope.alerts.push { type: 'danger', msg: 'Oh snap! Something did not go well. If all other fails, try the phone.' }
