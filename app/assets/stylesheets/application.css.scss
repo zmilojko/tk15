@@ -34,16 +34,20 @@ body {
   background-size: cover;
   margin-top: 8px;
   margin-bottom: 16px;
-  height: 486px; 
+  height: 486px;
   background-image: url(jumbo.jpg);
   padding-top: 310px;
-  
+
   h1 {
     margin-bottom: 0px;
   }
   h2 {
     margin-top: 0px;margin-bottom: 3px;
   }
+}
+
+.indent {
+  margin-left: 20px;
 }
 
 .minitron {

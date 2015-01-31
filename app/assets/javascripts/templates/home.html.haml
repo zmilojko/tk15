@@ -5,12 +5,16 @@
     %p
       %span Ookko nää kunnossa?
       %a(href="/#/apply")
-        %span.btn.btn-primary.btn-lg(href="#" role="button") Ilimottaudu nyt!
+        %span.btn.btn-primary.btn-lg(href="#" role="button") Ilimottaudu tässä 3.2. jälkeen!
   .row
     .col-sm-8
       = Haml::Engine.new(File.read("app/assets/javascripts/templates/menu.html.haml")).render
-      %h3 Tervetuloa nauttimaan koiravaljakkokilpailuista kauniissa ympäristössä Taivalkoskella! 
-      %p Taivalvaaran uudistettu hiihtostadion tarjoaa sprinttikisoille upeat puitteet- tule koko perheen kanssa! 
+      %h3 Tervetuloa nauttimaan koiravaljakkokilpailuista kauniissa ympäristössä Taivalkoskella!
+      %p Taivalvaaran uudistettu hiihtostadion tarjoaa sprinttikisoille upeat puitteet- tule koko perheen kanssa, aktiviteetteja löytyy kaikille!
+      %p
+
       %strong Lapsille oma kilpailu!
+      %p
+      %p Järjestävänä seurana toimii Metsä-Veikot 85 yhteistyössä Rovaniemen palveluskoirakerhon kanssa! http://www.metsaveikot85.fi/fi/Mets%C3%A4-Veikot85.html
     .col-sm-4
       = Haml::Engine.new(File.read("app/assets/javascripts/templates/sponsors.html.haml")).render

@@ -4,6 +4,12 @@
   .row
     .col-sm-8
       = Haml::Engine.new(File.read("app/assets/javascripts/templates/menu.html.haml")).render
-      %p Kilpailupaikkana toimii Taivalvaaran hiihtostadion. Stadion on kokenut mittavan 
+      %p Kilpailupaikkana toimii Taivalvaaran hiihtostadion. Stadion on kokenut mittavan uudistumisen viime vuosien aikana. Alueelle on rakennettu uusi hiihtostadion sekä monitoimitalo.
+
+      %p Metsä-Veikot ovat järjestäneet hiihtostadionilla nuorten SM hiihdot vuonna 2013 ja  tulevat järjestämään siellä vuonna 2016 yleisen sarjan SM hiihdot.
+
+      %img(src= "http://jonijurmu.kuvat.fi/kuvat/Nuorten%20SM-hiihdot%202013,%20Taivalkoski/Nuorten%20SM%20hiihdot%20Taivalvaaralla%2016.03.2013%20038.JPG/_full.jpg" style="max-height:100%; max-width:100%;")
+      %img(src= "http://jonijurmu.kuvat.fi/kuvat/Nuorten%20SM-hiihdot%202013,%20Taivalkoski/Nuorten%20SM%20hiihdot%20Taivalvaaralla%2016.03.2013%20178.JPG/_full.jpg" style="max-height:100%; max-width:100%;")
+
     .col-sm-4
       = Haml::Engine.new(File.read("app/assets/javascripts/templates/sponsors.html.haml")).render
