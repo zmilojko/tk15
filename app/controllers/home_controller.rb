@@ -7,7 +7,7 @@ class HomeController < ApplicationController
   def apply
     a = params["home"]
     a["appnum"] = User.max(:appnum).to_i + 1
-    puts  JSON.pretty_generate a
+    # puts  JSON.pretty_generate a
     data = params["receipt"]# code like this  data:image/png;base64,iVBORw0KGgoA...
     if params["receipt"].nil?
       render json: {reason: "Did you pay? You should upload the receipt!", status: 400}, status: 400
