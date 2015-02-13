@@ -51,3 +51,4 @@ gem "tzinfo-data", platforms: [:mingw, :mswin, :x64_mingw]
 gem "tzinfo", platforms: [:mingw, :mswin, :x64_mingw]
 gem "devise", "~> 3.3.0"
 gem "pry-rails", :group => :development
+gem "htmlcompressor"
