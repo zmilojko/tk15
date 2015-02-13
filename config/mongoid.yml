@@ -1,3 +1,10 @@
+production:
+  sessions:
+    default:
+      database: tk15
+      hosts:
+        - localhost:27017
+
 development:
   # Configure available database sessions. (required)
   sessions:
