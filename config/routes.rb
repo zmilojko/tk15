@@ -1,7 +1,9 @@
 Rails.application.routes.draw do
   devise_for :users
   scope '/admin' do
-    resources :users, as: 'users'
+    resources :users, as: 'users' do
+      get 'receipt', on: :member
+    end
   end
 
   post '/apply', to: 'home#apply'
