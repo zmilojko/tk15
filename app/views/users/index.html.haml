@@ -5,8 +5,6 @@
     %tr
       %th Name
       %th Email
-      %th Password
-      %th Password confirmation
       %th Admin
       %th
       %th
@@ -17,9 +15,8 @@
       %tr
         %td= user.name
         %td= user.email
-        %td= user.password
-        %td= user.password_confirmation
         %td= user.admin
+      -#
         %td= link_to 'Show', user
         %td= link_to 'Edit', edit_user_path(user)
         %td= link_to 'Destroy', user, :method => :delete, :data => { :confirm => 'Are you sure?' }

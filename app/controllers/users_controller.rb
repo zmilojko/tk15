@@ -2,30 +2,40 @@ class UsersController < ApplicationController
   before_action :set_user, only: [:show, :edit, :update, :destroy]
   before_action :authenticate_user!
   
+  def check_admin_or_me
+    unless @user and current_user == @user
+      check_admin
+    end
+  end
   
   # GET /users
   # GET /users.json
   def index
+    check_admin
     @users = User.all
   end
 
   # GET /users/1
   # GET /users/1.json
   def show
+    check_admin_or_me
   end
 
   # GET /users/new
   def new
+    check_admin
     @user = User.new
   end
 
   # GET /users/1/edit
   def edit
+    check_admin_or_me
   end
 
   # POST /users
   # POST /users.json
   def create
+    check_admin
     @user = User.new(user_params)
 
     respond_to do |format|
@@ -42,6 +52,7 @@ class UsersController < ApplicationController
   # PATCH/PUT /users/1
   # PATCH/PUT /users/1.json
   def update
+    check_admin
     respond_to do |format|
       if @user.update(user_params)
         format.html { redirect_to @user, notice: 'User was successfully updated.' }
@@ -56,6 +67,7 @@ class UsersController < ApplicationController
   # DELETE /users/1
   # DELETE /users/1.json
   def destroy
+    check_admin
     @user.destroy
     respond_to do |format|
       format.html { redirect_to users_url, notice: 'User was successfully destroyed.' }

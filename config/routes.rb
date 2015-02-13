@@ -6,5 +6,10 @@ Rails.application.routes.draw do
 
   post '/apply', to: 'home#apply'
   
+  devise_scope :user do 
+    get '/login', to: 'devise/sessions#new'
+    get '/logout', to: 'devise/sessions#destroy'
+  end
+  
   root to: 'home#index'
 end
