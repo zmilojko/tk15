@@ -12,7 +12,7 @@ class UsersController < ApplicationController
   # GET /users.json
   def index
     check_admin
-    @users = User.all
+    @users = User.collection.find
   end
 
   # GET /users/1
