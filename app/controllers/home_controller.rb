@@ -28,12 +28,12 @@ class HomeController < ApplicationController
       f.write(file_data)
     end
     a.delete :receipt
-    puts  JSON.pretty_generate a
+    # puts  JSON.pretty_generate a
     User.collection.insert(a)
     a = User.collection.find(appnum: a["appnum"]).first
     render json: { result: 'ok', application: a.as_json }
-    puts  JSON.pretty_generate a.as_json
+    # puts  JSON.pretty_generate a.as_json
     
-    RegistrationMailer.welcome_email(a).deliver_later
+    RegistrationMailer.welcome_email(a).deliver
   end
 end

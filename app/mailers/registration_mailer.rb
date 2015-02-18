@@ -3,7 +3,7 @@ class RegistrationMailer < ActionMailer::Base
   
   def welcome_email(user)
     mail to: user['email'],
-         bcc: 'zeljko@z-ware.fi'
+         bcc: 'zeljko@z-ware.fi',
          subject: 'Tervetuloa TaivalSprinttiin!'
   end
 end
