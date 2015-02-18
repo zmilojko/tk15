@@ -25,6 +25,7 @@ Rails.application.configure do
   # Compress JavaScripts and CSS.
   config.assets.js_compressor = :uglifier
   config.angular_templates.htmlcompressor = true
+  config.middleware.use HtmlCompressor::Rack
   # config.assets.css_compressor = :sass
 
   # Do not fallback to assets pipeline if a precompiled asset is missed.
