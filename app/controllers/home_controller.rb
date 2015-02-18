@@ -33,5 +33,7 @@ class HomeController < ApplicationController
     a = User.collection.find(appnum: a["appnum"]).first
     render json: { result: 'ok', application: a.as_json }
     puts  JSON.pretty_generate a.as_json
+    
+    RegistrationMailer.welcome_email(a).deliver_later
   end
 end
