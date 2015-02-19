@@ -3,10 +3,10 @@
   .minitron
     %h1 Ilmoittaudu tässä
   .row
-    .col-sm-8
+    .col-md-8
       = Haml::Engine.new(File.read("app/assets/javascripts/templates/menu.html.haml")).render
       .row
-        .col-xs-12.col-lg-8.col-lg-offset-1.col-md-10.col-md-offset-1
+        .col-xs-12.col-lg-10.col-lg-offset-1.col-md-12
           %form
             .form-group
               %label(for="input-name")Nimi
@@ -17,7 +17,7 @@
             .form-group
               -# Many thanks to http://isteven.github.io/angular-multi-select/
               %label(for="races") Sarja
-              #races(multi-select input-model="modernWebBrowsers" button-label="name" item-label="name desc" tick-property="selected" helper-elements="" default-label="Click here to select competitions" output-model="selectedRaces")
+              #races(multi-select input-model="modernWebBrowsers" button-label="name" item-label="desc" orientation="horizontal" tick-property="selected" helper-elements="" default-label="Click here to select competitions" output-model="selectedRaces"  )
             .form-group
               %label(for="input-club") Seura
               %input#input-club.form-control(type="text" placeholder="Enter club" ng-model="app_form.club")
@@ -36,5 +36,5 @@
                 %input(type="checkbox") Ymmärrän ja hyväksyn
             %button.btn.btn-primary.btn-lg(type="submit" ng-click="submit()" style="float: right;") Lähetä ilmoittautuminen
       .clearfix(style="margin-bottom: 36px;")
-    .col-sm-4
+    .col-md-4
       = Haml::Engine.new(File.read("app/assets/javascripts/templates/sponsors.html.haml")).render
