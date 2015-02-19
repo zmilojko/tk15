@@ -40,7 +40,7 @@
       console.log $scope.selectedRaces
       $scope.app_form.races = []
       $scope.app_form.races.push race.name for race in $scope.selectedRaces
-      $scope.alerts.push { type: 'success', msg: "Please wait, applying now. It can take a minute or two!" }
+      $scope.alerts.push { type: 'success', msg: "Ole hyvä ja odota, lataaminen voi kestää hetken!" }
       $http.post("/apply.json", $scope.app_form)
       .then (result) ->
         console.log "Great success! Application: #{result.data.application}"
