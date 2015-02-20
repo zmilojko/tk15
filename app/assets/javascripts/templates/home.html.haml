@@ -2,7 +2,7 @@
   %alert(ng-repeat="alert in alerts" type="{{alert.type}}" close="closeAlert($index)") {{alert.msg}}
   .jumbotron
     %h1.title Taivalvaara Sprint
-    %h2.title2.hidden-sm.hidden-xs SM S4, SP4j, SP8, koirahiihto, yhdistetty 7.-8.3.2015
+    %h2.title2.hidden-sm.hidden-xs SM SP4, SP4j, SP8, koirahiihto, yhdistetty 7.-8.3.2015
     %p
       %span Ookko nää kunnossa?
       %a(href="/#/apply")
@@ -20,3 +20,4 @@
         yhteistyössä Rovaniemen palveluskoirakerhon kanssa!
     .col-sm-4
       = Haml::Engine.new(File.read("app/assets/javascripts/templates/sponsors.html.haml")).render
+  = Haml::Engine.new(File.read("app/assets/javascripts/templates/footer.html.haml")).render

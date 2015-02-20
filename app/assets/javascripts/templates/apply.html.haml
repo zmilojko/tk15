@@ -38,3 +38,5 @@
       .clearfix(style="margin-bottom: 36px;")
     .col-md-4
       = Haml::Engine.new(File.read("app/assets/javascripts/templates/sponsors.html.haml")).render
+  = Haml::Engine.new(File.read("app/assets/javascripts/templates/footer.html.haml")).render
+
