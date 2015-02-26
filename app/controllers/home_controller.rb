@@ -13,6 +13,9 @@ class HomeController < ApplicationController
     if params["receipt"].nil?
       render json: {reason: "Did you pay? You should upload the receipt!", status: 400}, status: 400
       return
+    elsif params["receipt"].include? "text/csv"
+      file_type = "csv"
+      file_data = Base64.decode64(params["receipt"].gsub(/.+base64,/,""))
     elsif params["receipt"].include? "application/pdf"
       file_type = "pdf"
       file_data = Base64.decode64(params["receipt"].gsub(/.+base64,/,""))
