@@ -1,4 +1,6 @@
 Rails.application.routes.draw do
+  resources :cms_blocks
+
   devise_for :users
   scope '/admin' do
     resources :users, as: 'users' do

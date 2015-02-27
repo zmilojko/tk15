@@ -1,0 +1,23 @@
+%h1 Listing cms_blocks
+
+%table
+  %thead
+    %tr
+      %th Name
+      %th Content
+      %th
+      %th
+      %th
+      
+  %tbody
+    - @cms_blocks.each do |cms_block|
+      %tr
+        %td= cms_block.name
+        %td= cms_block.content
+        %td= link_to 'Show', cms_block
+        %td= link_to 'Edit', edit_cms_block_path(cms_block)
+        %td= link_to 'Destroy', cms_block, :method => :delete, :data => { :confirm => 'Are you sure?' }
+
+%br
+
+= link_to 'New Cms block', new_cms_block_path
