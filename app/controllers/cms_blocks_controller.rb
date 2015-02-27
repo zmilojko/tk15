@@ -62,9 +62,12 @@ class CmsBlocksController < ApplicationController
   end
 
   private
-    # Use callbacks to share common setup or constraints between actions.
     def set_cms_block
-      @cms_block = CmsBlock.find(params[:id])
+      # try to find the block by name and then by id
+      puts "Searching for #{params[:id]}"
+      @cms_block = CmsBlock.where(name: params[:id])[0] 
+      @cms_block ||= CmsBlock.find(params[:id])
+      puts "Found: #{@cms_block}"
     end
 
     # Never trust parameters from the scary internet, only allow the white list through.

@@ -1,12 +1,8 @@
 %p#notice= notice
 
-%p
-  %b Name:
-  = @cms_block.name
-%p
-  %b Content:
-  = @cms_block.content
+%h1= @cms_block.name
+.cms_content(style="padding: 6px; border: solid 1px gray;")= @cms_block.view
 
 = link_to 'Edit', edit_cms_block_path(@cms_block)
 \|
-= link_to 'Back', cms_blocks_path
+= link_to 'Back', cms_block_index_path

@@ -1,10 +1,9 @@
 %h1 Listing cms_blocks
 
-%table
+%table.table
   %thead
     %tr
       %th Name
-      %th Content
       %th
       %th
       %th
@@ -12,9 +11,8 @@
   %tbody
     - @cms_blocks.each do |cms_block|
       %tr
-        %td= cms_block.name
-        %td= cms_block.content
-        %td= link_to 'Show', cms_block
+        %td= link_to cms_block.name, cms_block 
+        %td= cms_block.content[0,100] + (cms_block.content.length > 100 ? "..." : "")
         %td= link_to 'Edit', edit_cms_block_path(cms_block)
         %td= link_to 'Destroy', cms_block, :method => :delete, :data => { :confirm => 'Are you sure?' }
 

@@ -1,6 +1,9 @@
 Rails.application.routes.draw do
-  resources :cms_blocks
-
+  scope '/admin' do
+    resources :cms, as: 'cms_block', controller: 'cms_blocks'
+  end
+  get 'cms/:id', to: 'cms_blocks#show'
+  
   devise_for :users
   scope '/admin' do
     resources :users, as: 'users' do
