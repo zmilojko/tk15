@@ -1,5 +1,6 @@
 class CmsBlocksController < ApplicationController
   before_action :set_cms_block, only: [:show, :edit, :update, :destroy]
+  before_action :authenticate_user!, except: :show
 
   # GET /cms_blocks
   # GET /cms_blocks.json
