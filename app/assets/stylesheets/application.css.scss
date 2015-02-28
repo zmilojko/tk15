@@ -61,10 +61,19 @@ body {
   }
 }
 
-.indent {
+.indent, .location-block p, .location-block ul {
   margin-left: 20px;
 }
 
 .minitron {
   margin-top: 20px;
+}
+
+.home-block {
+  text-align: center;
+  strong {
+    margin-top: 20px;
+    margin-bottom: 30px;
+    display: block;
+  }
 }

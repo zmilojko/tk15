@@ -10,14 +10,7 @@
   .row
     .col-sm-8
       = Haml::Engine.new(File.read("app/assets/javascripts/templates/menu.html.haml")).render
-      %h3(style="text-align:center;") Tervetuloa nauttimaan koiravaljakkokilpailuista kauniissa ympäristössä Taivalkoskella!
-      %p(style="text-align:center;") Taivalvaaran uudistettu hiihtostadion tarjoaa sprinttikisoille upeat puitteet- tule koko perheen kanssa, aktiviteetteja löytyy kaikille!
-      %p(style="text-align:center;margin-top:20px;")
-        %strong Lapsille oma kilpailu!
-      %p(style="text-align:center;margin-top:30px") 
-        Järjestävänä seurana toimii
-        %a(href="http://www.metsaveikot85.fi/fi/Mets%C3%A4-Veikot85.html") Metsä-Veikot 85
-        yhteistyössä Rovaniemen palveluskoirakerhon kanssa!
+      %div(cms-block="home" class="home-block")
     .col-sm-4
       = Haml::Engine.new(File.read("app/assets/javascripts/templates/sponsors.html.haml")).render
   = Haml::Engine.new(File.read("app/assets/javascripts/templates/footer.html.haml")).render

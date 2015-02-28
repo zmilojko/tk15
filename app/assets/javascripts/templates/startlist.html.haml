@@ -4,7 +4,7 @@
   .row
     .col-sm-8
       = Haml::Engine.new(File.read("app/assets/javascripts/templates/menu.html.haml")).render
-      %p Lähtölista julkistetaan tällä sivulla, kun kaikki ilmoittautumiset on käsitelty.
+      %div(cms-block="start-list-not-ready-info")
       %hr
       %p Ookko nää kunnossa?
       %p

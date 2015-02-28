@@ -4,72 +4,7 @@
   .row
     .col-sm-8
       = Haml::Engine.new(File.read("app/assets/javascripts/templates/menu.html.haml")).render
-      %h3 Sijainti
-      .indent
-        %p Taivalkosken kunta sijaitsee Pohjois-Pohjanmaan maakunnassa Koillismaalla. Kunta rajoittuu lännessä Pudasjärven, idässä Kuusamon, pohjoisessa Posion ja etelässä Suomussalmen kuntiin.
-        %p Tärkeimpiä etäisyyksiä maanteitse:
-
-        %ul
-          %li Helsinki 777 km
-          %li Oulu 154 km
-          %li Kajaani 210 km
-          %li Kemijärvi 196 km
-          %li Kuusamo 64 km
-          %li Rovaniemi 216 km
-
-      %h3 Majoitus
-      .indent
-        %p
-          Taivalkosken majoituskohteet löytyvät
-          %a(href="http://www.visittaivalkoski.fi/majoitus") matkailusivustolta.
-          Muita majoituskohteita alle 40km päästä löytyy
-          %a(href="http://www.pikkusyote.fi/fi/hotelli") Pikku-Syötteellä
-          sekä
-          %a(href="http://www.syote.fi/fi/etusivu/") Iso-Syötteellä.
-          %p Samaan aikaan järjestettävä Rajalta rajalle hiihto vie ison osan Hotelli Herkon sekä Hotelli Pikku-Syötteen petipaikoista.
-
-      %h3 Aktiviteetteja
-      .indent
-        %p
-          %strong
-            %a(href="www.taivalvaara.fi") Taivalvaara
-          on ennen kaikkea perinteinen talviurheilukeskus, josta löytyy laskettelurinteet, välinevuokraus, hyppyrimäet, hiihtoladut ja kahvila, mutta tekemistä löytyy ympäri vuoden.
-
-        %p
-          %strong
-            %a(href="http://www.visittaivalkoski.fi/frisbee-golf/frisbeegolfpuisto-seikkailupuisto")Frisbeegolfpuisto.
-          18-väylää ja 9-väylää rata.
-          %strong
-            Seikkailupuisto:
-          Kesällä käytössä on 13,5 metriä korkea kiipeilyseinä, 16 m köysilaskeutumispiste, sekä kolme eritasoista seikkailurataa.
-
-        %p
-          %strong
-            %a(href="http://www.visittaivalkoski.fi/vaellus-sauvakavely/sauvakavelypuisto-taivalvaara")Sauvakävelypuisto.
-          Taivalvaaralla ei panna kesälläkään sauvoja naulaan. Suomen ensimmäinen sauvakävelypuisto löytyy Taivalkoskelta. Taivalvaaran maastossa on 6 reittiä, joiden vaatimustaso vaihtelee helposta vaikeaan.
-
-        %p
-          %strong
-            %a(href="http://www.visittaivalkoski.fi/melonta/melontakeskus") Melontakeskus.
-          Taivalkosken melontakeskus on monipuolinen vesiurheilukeskus. Melontakeskuksessa on mahdollista harrastaa kanoottipujottelua, freestylemelontaa, opetella melonnan alkeita tai laskea riverboogielaudalla.
-
-        %p
-          %strong
-            %a(href="http://www.visittaivalkoski.fi/aktiviteetit") Muita aktiviteetteja:
-          Husky safarit, lumikenkäily, moottorikelkkailu, maastopyöräily.
-
-      %h3 Nähtävyydet
-      .indent
-        %p Vapaana virtaava komea Iijoki värittää Taivalkosken maisemat jylhiksi. Se tarjoaa luonnon rauhaa ja eräkokemuksia läpi vuoden. Luonnosta, elämästä sen äärellä ja aidoista kokemuksista on myös imetty inspiraatiota paikallisiin tapahtumiin. Taivalkoskella on kulttuuritapahtumia, luonnonrauhaa ja eräkokemuksia jokaiseen makuun.
-
-        %p
-          Kulttuurinähtävyyksiä: Jalavan Kauppa, Kallioniemi - Kalle Päätalon lapsuudenkoti, Kenttärata,
-          %a(href="http://www.visittaivalkoski.fi/nahtavyydet/kulttuurinahtavyydet") Lisätietoja.
-
-        %p
-          Luonnon nähtävyydet: Kylmäluoman retkeily- ja aarnialue, Pahkakuru, Pyhitys, Soiperoinen, Syötteen kansallispuisto,
-          %a(href="http://www.visittaivalkoski.fi/nahtavyydet/luonnon-nahtavyydet") Lisätietoja
-
+      %div(cms-block="location" class="location-block")
     .col-sm-4
       = Haml::Engine.new(File.read("app/assets/javascripts/templates/sponsors.html.haml")).render
   = Haml::Engine.new(File.read("app/assets/javascripts/templates/footer.html.haml")).render
