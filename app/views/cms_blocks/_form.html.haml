@@ -1,4 +1,4 @@
-= form_for @cms_block do |f|
+= bootstrap_form_for @cms_block do |f|
   - if @cms_block.errors.any?
     #error_explanation
       %h2= "#{pluralize(@cms_block.errors.count, "error")} prohibited this cms_block from being saved:"
@@ -7,10 +7,8 @@
           %li= msg
 
   .field
-    = f.label :name
     = f.text_field :name
   .field
-    = f.label :content
     = f.text_area :content
   .actions
     = f.submit 'Save'
