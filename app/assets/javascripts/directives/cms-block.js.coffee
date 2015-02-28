@@ -6,6 +6,6 @@
     link: (scope, elem, attr) ->
       cmsService.getBlockView(scope.cmsBlock).then (view) ->
         elem.append(view)
-        for link in elem.find('a') when link.href.indexOf(window.location.hostname)
+        for link in elem.find('a') when link.href.indexOf(window.location.hostname) == -1
           link.target = "_blank"
 ]
