@@ -5,7 +5,7 @@
     %th Name
     %th Email
     %th Club
-    %th Application number
+    %th Dogs
     %th Applied for
     %th Receipt
     %th
@@ -14,11 +14,14 @@
       %td= link_to (user['name'] or "no name"), "/admin/users/#{user['_id']}"
       %td= user['email']
       %td= user['club']
-      %td= user['appnum']
+      %td= user['dogs']
       %td= user['races'].join(", ") if user['races']
       %td= (link_to 'download receipt', "/admin/users/#{user['_id']}/receipt") if user['receipt_file']
       %td
-        %strong= "admin!" if user['admin']
+        -if user['admin']
+          %strong= "admin!"
+        -else
+          %td= link_to 'Destroy', user, :method => :delete, :data => { :confirm => 'Are you sure?' }
     -#
       %td= user.password
       %td= user.password_confirmation
