@@ -1,0 +1,25 @@
+%h1 Listing competitions
+
+%table.table
+  %thead
+    %tr
+      %th Code
+      %th Name
+      %th Type
+      %th
+      %th
+      %th
+      
+  %tbody
+    - @competitions.each do |competition|
+      %tr
+        %td= competition.code
+        %td= competition.name
+        %td= competition.type
+        %td= link_to 'Show', competition
+        %td= link_to 'Edit', edit_competition_path(competition)
+        %td= link_to 'Destroy', competition, :method => :delete, :data => { :confirm => 'Are you sure?' }
+
+%br
+
+= link_to 'New Competition', new_competition_path
