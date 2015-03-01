@@ -3,6 +3,7 @@
 %table.table
   %thead
     %tr
+      %th Order
       %th Code
       %th Name
       %th Type
@@ -13,6 +14,7 @@
   %tbody
     - @competitions.each do |competition|
       %tr
+        %td= competition.order_number
         %td= competition.code
         %td= competition.name
         %td= competition.type

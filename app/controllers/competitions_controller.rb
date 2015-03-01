@@ -5,7 +5,7 @@ class CompetitionsController < ApplicationController
   # GET /competitions
   # GET /competitions.json
   def index
-    @competitions = Competition.all
+    @competitions = Competition.all.order_by(order_number: :asc)
     respond_to do |format|
       format.html { render :index }
       format.json { render json: @competitions.as_json }
@@ -81,6 +81,6 @@ class CompetitionsController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def competition_params
-      params.require(:competition).permit(:code, :name, :type)
+      params.require(:competition).permit(:code, :name, :type, :order_number)
     end
 end
