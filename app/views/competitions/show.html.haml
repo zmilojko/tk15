@@ -13,3 +13,23 @@
 = link_to 'Edit', edit_competition_path(@competition)
 \|
 = link_to 'Back', competitions_path
+
+%h3 Start list
+
+-if @competition[:list].nil?
+  %p No start list has been done yet
+-else
+  %table.table
+    %thead
+      %tr
+        %th Number
+        %th Name
+        %th Club
+        %th Dogs
+    %tbody
+      - @competition[:list].each do |competitor|
+        %tr
+          %td= competitor[:number]
+          %td= competitor[:name]
+          %td= competitor[:club]
+          %td= competitor[:dogs]

@@ -25,6 +25,7 @@ class CmsBlocksController < ApplicationController
   # POST /cms_blocks
   # POST /cms_blocks.json
   def create
+    check_admin
     @cms_block = CmsBlock.new(cms_block_params)
 
     respond_to do |format|
@@ -41,6 +42,7 @@ class CmsBlocksController < ApplicationController
   # PATCH/PUT /cms_blocks/1
   # PATCH/PUT /cms_blocks/1.json
   def update
+    check_admin
     respond_to do |format|
       if @cms_block.update(cms_block_params)
         format.html { redirect_to @cms_block, notice: 'Cms block was successfully updated.' }
@@ -55,6 +57,7 @@ class CmsBlocksController < ApplicationController
   # DELETE /cms_blocks/1
   # DELETE /cms_blocks/1.json
   def destroy
+    check_admin
     @cms_block.destroy
     respond_to do |format|
       format.html { redirect_to cms_blocks_url, notice: 'Cms block was successfully destroyed.' }
