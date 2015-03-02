@@ -6,7 +6,9 @@ Rails.application.routes.draw do
   end
 
   scope '/admin' do
-    resources :competitions, as: 'competitions'
+    resources :competitions, as: 'competitions' do
+      post 'organize', on: :collection
+    end
     resources :cms, as: 'cms_block', controller: 'cms_blocks'
     resources :users, as: 'users' do
       get 'receipt', on: :member

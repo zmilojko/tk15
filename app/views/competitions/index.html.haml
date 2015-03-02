@@ -1,28 +1,35 @@
 %h1 Listing competitions
 
+-if user_signed_in? and current_user.admin?
+  = link_to("/admin/competitions/organize", :method => :post) do
+    %button.btn.btn-default Reorganize competitions
+
 %p
   %span Total competitors:
   %strong=@total_competitors
 
 .row(style="font-weight: bold")
-  .col-xs-3.col-sm-1 Order
+  -if user_signed_in? and current_user.admin?
+    .col-xs-3.col-sm-1 Order
   .col-xs-3.col-sm-2 Code
   .col-xs-3.col-sm-4 Name
   .col-xs-3.col-sm-3 Type
 - @competitions.each do |competition|
   .row(style="border-top: solid 1px #ccc")
-    .col-xs-3.col-sm-1= competition.order_number
+    -if user_signed_in? and current_user.admin?
+      .col-xs-3.col-sm-1= competition.order_number
     .col-xs-3.col-sm-2= competition.code
     .col-xs-3.col-sm-4= competition.name
     .col-xs-3.col-sm-2= competition.type[0,12]
-    .hidden-xs.col-sm-3
-      = link_to 'Show', competition
-      = link_to 'Edit', edit_competition_path(competition)
-      = link_to 'Destroy', competition, :method => :delete, :data => { :confirm => 'Are you sure?' }
+    -if user_signed_in? and current_user.admin?
+      .hidden-xs.col-sm-3
+        = link_to 'Show', competition
+        = link_to 'Edit', edit_competition_path(competition)
+        = link_to 'Destroy', competition, :method => :delete, :data => { :confirm => 'Are you sure?' }
 
-%br
-
-#span(style="font-weight: bold")= link_to 'New Competition', new_competition_path
+-if user_signed_in? and current_user.admin?
+  %br
+  #span(style="font-weight: bold")= link_to 'New Competition', new_competition_path
 
 %h2 Current startlists
 
