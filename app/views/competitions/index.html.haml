@@ -15,19 +15,21 @@
     -if user_signed_in? and current_user.admin?
       .col-xs-3.col-sm-1 Order
     .col-xs-3.col-sm-2 Code
-    .col-xs-3.col-sm-4 Name
-    .col-xs-3.col-sm-3 Type
+    .col-xs-3.col-sm-3 Name
+    .col-xs-3.col-sm-2 Type
+    .col-xs-3.col-sm-2 State
   - @competitions.each do |competition|
     .row(style="border-top: solid 1px #ccc")
       -if user_signed_in? and current_user.admin?
         .col-xs-3.col-sm-1= competition.order_number
-      .col-xs-3.col-sm-2= competition.code
-      .col-xs-3.col-sm-4= competition.name
+      .col-xs-3.col-sm-2= link_to competition.code, edit_competition_path(competition)
+      .col-xs-3.col-sm-3= competition.name
       .col-xs-3.col-sm-2= competition.type[0,12]
+      .col-xs-3.col-sm-2= competition.state or "open"
       -if user_signed_in? and current_user.admin?
-        .hidden-xs.col-sm-3
-          = link_to 'Show', competition
-          = link_to 'Edit', edit_competition_path(competition)
+        .hidden-xs.col-sm-2
+          -if competition.next_state
+            = link_to "Change to #{competition.next_state}", "/admin/competitions/#{competition._id}/next_state", :method => :post
           = link_to 'Destroy', competition, :method => :delete, :data => { :confirm => 'Are you sure?' }
 
   -if user_signed_in? and current_user.admin?

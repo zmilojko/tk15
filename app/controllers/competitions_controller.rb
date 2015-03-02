@@ -1,5 +1,5 @@
 class CompetitionsController < ApplicationController
-  before_action :set_competition, only: [:show, :edit, :update, :destroy]
+  before_action :set_competition, only: [:show, :edit, :update, :destroy, :next_state]
   before_action :authenticate_user!, except: [:show, :index]
 
   # GET /competitions
@@ -18,6 +18,16 @@ class CompetitionsController < ApplicationController
     result = update_numbers(params)
     respond_to do |format|
       format.html { redirect_to competitions_path, notice: result }
+      format.json { render :show, status: :created, location: @competition }
+    end
+  end
+  
+  def next_state
+    puts "changing state from #{@competition.state} to #{@competition.next_state}"
+    @competition.next_state!
+    puts "state is now #{Competition.find(params[:id]).state}"
+    respond_to do |format|
+      format.html { redirect_to competitions_path, notice: "State changed to #{@competition.state}" }
       format.json { render :show, status: :created, location: @competition }
     end
   end
@@ -64,7 +74,7 @@ class CompetitionsController < ApplicationController
 
     respond_to do |format|
       if @competition.save
-        format.html { redirect_to @competition, notice: 'Competition was successfully created.' }
+        format.html { redirect_to competitions_path, notice: 'Competition was successfully created.' }
         format.json { render :show, status: :created, location: @competition }
       else
         format.html { render :new }
@@ -79,7 +89,7 @@ class CompetitionsController < ApplicationController
     check_admin
     respond_to do |format|
       if @competition.update(competition_params)
-        format.html { redirect_to @competition, notice: 'Competition was successfully updated.' }
+        format.html { redirect_to competitions_path, notice: 'Competition was successfully updated.' }
         format.json { render :show, status: :ok, location: @competition }
       else
         format.html { render :edit }
@@ -107,7 +117,7 @@ class CompetitionsController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def competition_params
-      params.require(:competition).permit(:code, :name, :type, :order_number)
+      params.require(:competition).permit(:code, :name, :type, :order_number, :state)
     end
     
     def to_new_code(maybe_old_code)

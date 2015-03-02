@@ -13,6 +13,8 @@
   .field
     = f.text_field :name
   .field
-    = f.select :type, ['single run', 'two runs combined'], { prompt: "Select a type" } #, :name, :name, { class: "form-control" }
+    = f.select :type, ['single run', 'two runs combined'], { prompt: "Select a type" }
+  .field
+    = f.select :state, [:open, :ready, :active, :done, :closed], { prompt: "Select a state" }
   .actions
     = f.submit 'Save'

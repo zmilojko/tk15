@@ -6,5 +6,7 @@
     controller: ($scope) ->
       kilpakoService.getCompetitionInfo().then (data) ->
         $scope.competition_info = data
+      $scope.doShowCompetition = (c) ->
+        c and c.state and c.state != "open"
     templateUrl: "kilpako-startlists.html"
   ]

@@ -9,6 +9,7 @@ Rails.application.routes.draw do
     resources :competitions, as: 'competitions' do
       post 'organize', on: :collection
       post 'numbers', on: :collection
+      post 'next_state', on: :member
     end
     resources :cms, as: 'cms_block', controller: 'cms_blocks'
     resources :users, as: 'users' do
