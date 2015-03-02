@@ -8,6 +8,7 @@ Rails.application.routes.draw do
   scope '/admin' do
     resources :competitions, as: 'competitions' do
       post 'organize', on: :collection
+      post 'numbers', on: :collection
     end
     resources :cms, as: 'cms_block', controller: 'cms_blocks'
     resources :users, as: 'users' do

@@ -13,7 +13,17 @@ class CompetitionsController < ApplicationController
     end
   end
   
+  def numbers
+    check_admin
+    result = update_numbers(params)
+    respond_to do |format|
+      format.html { redirect_to competitions_path, notice: result }
+      format.json { render :show, status: :created, location: @competition }
+    end
+  end
+  
   def organize
+    check_admin
     results = perform_reorganization
     if results.blank?
       notice = "Competition reorganization done, no change!"
@@ -140,5 +150,30 @@ class CompetitionsController < ApplicationController
         end
       end
       results
+    end
+    
+    def update_numbers(data)
+      result = 0
+      data.each do |key, value| 
+        unless (ident = key.split("$")).blank? or ident[0] != "number"
+          competition = Competition.find_by(code: ident[1])
+          changed = false
+          competition[:list].map do |competitor|
+            if competitor[:id].to_s == ident[2].to_s
+              if competitor[:num].to_i != value.to_i
+                puts "Changing #{competitor[:name]} in #{competition[:code]} from #{competitor[:num]} to #{value}"
+                competitor[:num] = value
+                result += 1
+                changed = true
+              end
+            end
+            competitor
+          end
+          if changed
+            Competition.collection.find(_id: competition._id).update("$set" => { list: competition[:list]})
+          end
+        end
+      end
+      "Changed #{result} numbers."
     end
 end
