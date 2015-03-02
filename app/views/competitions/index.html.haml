@@ -1,5 +1,9 @@
 %h1 Listing competitions
 
+%p
+  %span Total competitors:
+  %strong=@total_competitors
+
 .row(style="font-weight: bold")
   .col-xs-3.col-sm-1 Order
   .col-xs-3.col-sm-2 Code
@@ -25,6 +29,9 @@
 - @competitions.each do |competition|
   -unless competition[:list].nil?
     %h3 #{competition.code} - #{competition.name}
+    %p
+      %span Competitors:
+      %strong=competition[:list].length
     .row(style="font-weight: bold")
       .col-xs-3.col-sm-1 Number
       .col-xs-3.col-sm-2 Name
