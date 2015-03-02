@@ -6,7 +6,7 @@ class CompetitionsController < ApplicationController
   # GET /competitions.json
   def index
     @competitions = Competition.all.order_by(order_number: :asc)
-    @total_competitors = @competitions.inject(0){|sum,x| sum + x[:list].length }
+    @total_competitors = @competitions.inject(0){|sum,x| sum + (x[:list].nil? ? 0 : x[:list].length) }
     respond_to do |format|
       format.html { render :index }
       format.json { render json: @competitions.as_json }

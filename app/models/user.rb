@@ -50,7 +50,7 @@ class User
     self[:races].join(", ")
   end
   def competitions=(x)
-    self[:races] = x.split /[, ]+/
+    self[:races] = x.strip.split /\ *,\ */
     Competition.collection.find(_id: self._id).update("$set" => { races: self[:races]})
   end
 end
