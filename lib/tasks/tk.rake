@@ -36,8 +36,10 @@ namespace :tk do
   desc "removes emails from the competitor info"
   task clean_emails: :environment do
     Competition.each do |competition|
-      new_list = competition[:list].map {|c| c.delete('email'); c }
-      Competition.collection.find(_id: competition._id).update("$set" => { list: new_list})
+      if competition[:list]
+        new_list = competition[:list].map {|c| c.delete('email'); c }
+        Competition.collection.find(_id: competition._id).update("$set" => { list: new_list})
+      end
     end
   end
 end
