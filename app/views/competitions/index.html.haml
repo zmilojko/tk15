@@ -36,28 +36,13 @@
     %br
     #span(style="font-weight: bold")= link_to 'New Competition', new_competition_path
 
-  %h2 Current startlists
+  - if @competitions.any? {|c| c.state and c.state.to_sym == :active }
+    %h2 Active competitions
+    - @competitions.each do |competition|
+      -if competition.state and competition.state.to_sym == :active
+        = render 'manage', competition: competition
 
+  %h2 Current startlists
   - @competitions.each do |competition|
     -unless competition[:list].nil?
-      %h3 #{competition.code} - #{competition.name}
-      %p
-        %span Competitors:
-        %strong=competition[:list].length
-      .row(style="font-weight: bold")
-        .col-xs-3.col-sm-1 Number
-        .col-xs-3.col-sm-2 Name
-        .col-xs-3.col-sm-4 Club
-        .col-xs-3.col-sm-5 Dogs
-      - competition[:list].sort_by{|x| x[:num]}.each do |competitor|
-        .row(style="border-top: solid 1px #ccc")
-          .col-xs-3.col-sm-1
-            -if user_signed_in? and current_user.admin?
-              .form-group
-                =number_field_tag "number$#{competition.code}$#{competitor[:id]}", competitor[:num], {class: "form-control"}
-            -else
-              = competitor[:num]
-          .col-xs-3.col-sm-2= competitor[:name].titleize
-          .col-xs-3.col-sm-4= competitor[:club]
-          .col-xs-3.col-sm-5= competitor[:dogs]
-
+      =render 'manage', competition: competition
