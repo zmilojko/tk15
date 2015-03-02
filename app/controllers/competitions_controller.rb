@@ -140,7 +140,6 @@ class CompetitionsController < ApplicationController
             competition[:list] << {
               id: user.id,
               num: (competition[:list].map{|x| x[:num]}.max or 0) + 1,
-              email: user.email,
               name: user.name,
               club: user.club,
               dogs: user[:dogs],

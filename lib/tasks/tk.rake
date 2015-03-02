@@ -22,7 +22,6 @@ namespace :tk do
           competition[:list] << {
             id: user.id,
             num: (competition[:list].map{|x| x[:num]}.max or 0) + 1,
-            email: user.email,
             name: user.name,
             club: user.club,
             dogs: user[:dogs],
@@ -34,4 +33,11 @@ namespace :tk do
     end
   end
 
+  desc "removes emails from the competitor info"
+  task clean_emails: :environment do
+    Competition.each do |competition|
+      new_list = competition[:list].map {|c| c.delete('email'); c }
+      Competition.collection.find(_id: competition._id).update("$set" => { list: new_list})
+    end
+  end
 end
