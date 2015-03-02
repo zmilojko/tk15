@@ -40,7 +40,7 @@
     - competition[:list].each do |competitor|
       .row(style="border-top: solid 1px #ccc")
         .col-xs-3.col-sm-1= competitor[:num]
-        .col-xs-3.col-sm-2= competitor[:name]
+        .col-xs-3.col-sm-2= competitor[:name].titleize
         .col-xs-3.col-sm-4= competitor[:club]
         .col-xs-3.col-sm-5= competitor[:dogs]
 

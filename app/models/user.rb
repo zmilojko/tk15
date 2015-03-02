@@ -38,6 +38,7 @@ class User
   # Additional fields
   field :name,      type: String
   field :club,      type: String
+  field :dogs,      type: String
   field :appnum,    type: String
   field :receipt_file,    type: String
   #has_mongoid_attached_file :receipt
@@ -45,8 +46,11 @@ class User
   
   field :admin,      type: Boolean, default: false
   
-  
-  
-  
-  
+  def competitions
+    self[:races].join(", ")
+  end
+  def competitions=(x)
+    self[:races] = x.split /[, ]+/
+    Competition.collection.find(_id: self._id).update("$set" => { races: self[:races]})
+  end
 end

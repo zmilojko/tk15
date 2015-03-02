@@ -53,9 +53,11 @@ class UsersController < ApplicationController
   # PATCH/PUT /users/1.json
   def update
     check_admin
+    k = user_params.to_hash
+    k.except! "password", "password_confirmation" if k["password"].blank?
     respond_to do |format|
-      if @user.update(user_params)
-        format.html { redirect_to @user, notice: 'User was successfully updated.' }
+      if @user.update(k)
+        format.html { redirect_to users_path, notice: 'User was successfully updated.' }
         format.json { render :show, status: :ok, location: @user }
       else
         format.html { render :edit }
@@ -97,6 +99,7 @@ class UsersController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def user_params
-      params.require(:user).permit(:name, :email, :password, :password_confirmation, :admin)
+      params.require(:user).permit(:name, :email, :password, :password_confirmation, :admin, 
+                    :club, :dogs, :races, :competitions)
     end
 end

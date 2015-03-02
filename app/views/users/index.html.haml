@@ -11,7 +11,7 @@
     %th
   - @users.each do |user|
     %tr
-      %td= link_to (user['name'] or "no name"), "/admin/users/#{user['_id']}"
+      %td= link_to (user['name'] or "no name"), "/admin/users/#{user['_id']}/edit"
       %td= user['email']
       %td= user['club']
       %td= user['dogs']

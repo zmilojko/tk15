@@ -6,20 +6,14 @@
         - @user.errors.full_messages.each do |msg|
           %li= msg
 
-  .field
-    
-    = f.text_field :name
-  .field
-    
-    = f.text_field :email
-  .field
-    
-    = f.password_field :password
-  .field
-    
-    = f.password_field :password_confirmation
-  .field
-    
-    = f.check_box :admin
-  .actions
-    = f.submit 'Save'
+  .field= f.text_field :name
+  .field= f.text_field :email
+  .field= f.password_field :password
+  .field= f.password_field :password_confirmation
+  %p Leave both password and password confirmation empty if you do not want to change them
+  .field= f.text_field :club
+  .field= f.text_field :dogs
+  .field= f.text_field :competitions
+  %p Use command or space to separate, you can use both old ("Veteraani Miehet A") and new ("SM1 veteraani A") codes, they will be translated to new when generating a list.
+  .field= f.check_box :admin
+  .actions= f.submit 'Save'
