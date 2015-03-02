@@ -52,3 +52,5 @@ gem "tzinfo", platforms: [:mingw, :mswin, :x64_mingw]
 gem "devise", "~> 3.3.0"
 gem "pry-rails", :group => :development
 gem "htmlcompressor"
+gem 'quiet_assets', group: :development
+gem "lograge"
