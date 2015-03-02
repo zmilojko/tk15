@@ -3,10 +3,11 @@
     restrict: 'E'
     scope: true
     transclude: false
-    controller: ($scope) ->
+    controller: ['$scope', ($scope) ->
       kilpakoService.getCompetitionInfo().then (data) ->
         $scope.competition_info = data
       $scope.doShowCompetition = (c) ->
         c and c.state and c.state != "open"
+    ]
     templateUrl: "kilpako-startlists.html"
   ]
