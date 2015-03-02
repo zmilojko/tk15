@@ -16,6 +16,7 @@ Rails.application.routes.draw do
     end
   end
 
+  get 'competition', to: 'competitions#index'
   get 'cms/:id', to: 'cms_blocks#show'
   post '/apply', to: 'home#apply'
 

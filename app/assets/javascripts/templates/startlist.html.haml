@@ -6,10 +6,8 @@
       = Haml::Engine.new(File.read("app/assets/javascripts/templates/menu.html.haml")).render
       %div(cms-block="start-list-not-ready-info")
       %hr
-      %p Ookko nää kunnossa?
-      %p
-        %a(href="/#/apply")
-          %span.btn.btn-primary.btn-lg(href="#" role="button") Ilimottaudu nyt!
+      %kilpako-startlists
+          
 
     .col-sm-4
       = Haml::Engine.new(File.read("app/assets/javascripts/templates/sponsors.html.haml")).render

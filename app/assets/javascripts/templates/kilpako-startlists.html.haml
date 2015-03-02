@@ -1,0 +1,18 @@
+.startlist
+%p(ng-hide="competition_info") Please waiting, loading competition info.
+.row.competition-startlist(ng-repeat="competition in competition_info | orderBy:'order_number'")
+  .col-xs-12
+    .row
+      .col-xs-12
+        %h3.competition-title {{competition.code}} - {{competition.name}}
+    .row.competitor-info(ng-repeat="competitor in competition.list | orderBy:'num'")
+      .col-xs-1.col-sm-1
+        {{competitor.num}}
+      .col-xs-11.col-sm-5
+        {{competitor.name.titleize()}}
+      .col-xs-offset-2.col-xs-5.col-sm-offset-0.col-sm-3
+        {{competitor.club|limitTo:12}}
+      .col-xs-5.col-sm-3
+        {{competitor.dogs|limitTo:15}}
+    
+  
