@@ -48,8 +48,7 @@
         .col-lg-1= render 'result', competition: competition, competitor: competitor, day: 0, active_list: active_list
       -else
         .col-lg-4=render 'result', competition: competition, competitor: competitor, day: 0, active_list: active_list
-      .col-lg-1
-        =competition.competitor_position competitor
+      .col-lg-1.score
         =competition.competitor_score competitor
         
         

@@ -49,9 +49,35 @@ class Competition
   def competitor_position(competitor)
     self[:list].find_index {|c| c == competitor} + 1
   end
+  
+  def timestamp_from_timestring ts
+    ts[/(\d):(\d\d):(\d\d).(\d)/,1].to_i*60*60 + 
+      ts[/(\d):(\d\d):(\d\d).(\d)/,2].to_i*60 + 
+      ts[/(\d):(\d\d):(\d\d).(\d)/,3].to_i + 
+      ts[/(\d):(\d\d):(\d\d).(\d)/,4].to_i/10
+  end
 
   def competitor_score(competitor)
-    
+    if type == "two runs combined"
+    else
+      unless competitor[:result] and competitor[:result][0] and competitor[:result][0][:status]
+        return nil
+      end
+      if "started dns dnf".split.include? competitor[:result][0][:status].to_s
+        competitor[:result][0][:status].to_s
+      elsif competitor[:result][0][:status].to_sym == :completed
+        if competitor_position(competitor) == 1
+          competitor[:result][0][:result_time]
+        else
+          timediff = timestamp_from_timestring(competitor[:result][0][:result_time]) - timestamp_from_timestring(self[:list][0][:result][0][:result_time])
+          res = sprintf("%1d:%02d:%02d.%1d",timediff/60/60, timediff / 60 % 60, timediff % 60, timediff * 10 % 10 )
+          res.gsub! /^[0\:]*/,""
+          "+ #{res}"
+        end
+      else
+        throw "again I forgot some state"
+      end
+    end
   end
   def current_run_info(competitor, day)
     if type == "two runs combined"
@@ -189,6 +215,8 @@ class Competition
     elsif is_time_string(new_status)
       competitor[:result][index][:status] = :completed
       competitor[:result][index][:result_time] = new_status
+    else
+      throw "Wrong format"
     end
     save_info!
   end
