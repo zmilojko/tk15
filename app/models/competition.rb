@@ -118,7 +118,7 @@ class Competition
     else
       index = 0
     end
-    start! competitor, day, self[:list].select {|c| c[:num] == competitor[:num] - 1}[0][:result][index][:start_time]
+    start! competitor, day, self[:list].select {|c| c[:num] == competitor[:num] - 1}[0][:result][index][:start_time] + 1.minute
   end
   def final_result(competitor)
     provisional_result(competitor)
