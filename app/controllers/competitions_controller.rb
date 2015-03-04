@@ -1,8 +1,8 @@
 class CompetitionsController < ApplicationController
   before_action :set_competition, only: [:show, :edit, :update, :destroy, :next_state,
-                                         :start_all, :start, :start1, :mark_dns, :mark_dnf,
+                                         :start_all, :start, :start_plus_one, :mark_dns, :mark_dnf,
                                          :mark_complete, :update_result]
-  before_action :set_competitor, only: [:start, :start1, :mark_dns, :mark_dnf,
+  before_action :set_competitor, only: [:start, :start_plus_one, :mark_dns, :mark_dnf,
                                          :mark_complete, :update_result]
   before_action :authenticate_user!, except: [:show, :index]
 
@@ -132,7 +132,54 @@ class CompetitionsController < ApplicationController
       format.json { head :no_content }
     end
   end
-  private
+
+  def start_plus_one
+    check_admin
+    puts "Starting after a minute #{@competitor[:name]} for competition #{@competition.name} on day #{params[:day]}"
+    @competition.start_plus_one! @competitor, params[:day].to_i
+    respond_to do |format|
+      format.html { redirect_to competitions_url, notice: "#{@competitor[:name]} started in #{@competition.name} one minute after previous." }
+      format.json { head :no_content }
+    end
+  end
+
+  def mark_dns
+    check_admin
+    puts "#{@competitor[:name]} marked :dns in #{@competition.name}."
+    @competition.mark_dns! @competitor, params[:day].to_i
+    respond_to do |format|
+      format.html { redirect_to competitions_url, notice: "#{@competitor[:name]} marked :dns in #{@competition.name}." }
+      format.json { head :no_content }
+    end
+  end
+  def mark_dnf
+    check_admin
+    puts "#{@competitor[:name]} marked :dnf in #{@competition.name}."
+    @competition.mark_dnf! @competitor, params[:day].to_i
+    respond_to do |format|
+      format.html { redirect_to competitions_url, notice: "#{@competitor[:name]} marked :dnf in #{@competition.name}." }
+      format.json { head :no_content }
+    end
+  end
+  def mark_complete
+    check_admin
+    puts "#{@competitor[:name]} passed through FINISH #{@competition.name}."
+    @competition.mark_complete! @competitor, params[:day].to_i
+    respond_to do |format|
+      format.html { redirect_to competitions_url, notice: "#{@competitor[:name]} passed through FINISH #{@competition.name}." }
+      format.json { head :no_content }
+    end
+  end
+  def update_result
+    check_admin
+    puts "#{@competitor[:name]} UDPATE #{params}."
+    #@competition.update_status! @competitor, params[:day].to_i, params[:day].to_i
+    respond_to do |format|
+      format.html { redirect_to competitions_url, notice: "#{@competitor[:name]} updated status" }
+      format.json { head :no_content }
+    end
+  end
+private
     # Use callbacks to share common setup or constraints between actions.
     def set_competition
       @competition = Competition.find(params[:id])
@@ -209,7 +256,7 @@ class CompetitionsController < ApplicationController
           end
           if changed
             #following will sort the list by start number and save it
-            competition.sort!
+            competition.save_info!
           end
         end
       end

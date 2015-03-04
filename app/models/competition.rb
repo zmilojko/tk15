@@ -44,16 +44,14 @@ class Competition
 
   def sort!
     self[:list].sort! { |c1,c2| self.compare c1, c2 }
-    save_info!
   end
   
   def competitor_position(competitor)
-    self.sort!
     self[:list].find_index {|c| c == competitor} + 1
   end
 
   def competitor_score(competitor)
-    'score'
+    
   end
   def current_run_info(competitor, day)
     if type == "two runs combined"
@@ -100,6 +98,7 @@ class Competition
     provisional_result(competitor)
   end
   def save_info!
+    sort!
     Competition.collection.find(_id: _id).update("$set" => { list: self[:list]})
   end
   def compare(c1, c2, only_first_day: false)
@@ -124,13 +123,67 @@ class Competition
                                   provisional_result(c2,only_first_day: only_first_day, comapring: true))
     end
   end
+  def mark_dns!(competitor, day)
+    if type == "two runs combined"
+      index = day - 1
+      competitor[:result] ||= [new_info_hash,new_info_hash]
+    else
+      competitor[:result] ||= [new_info_hash]
+      index = 0
+    end
+    competitor[:result][index][:status] = :dns
+    competitor[:result][index][:start_time] = nil
+    competitor[:result][index][:finish_time] = nil
+    competitor[:result][index][:result_time] = nil
+    if type == "two runs combined" and day == 1
+      competitor[:result][1][:status] = :dns
+      competitor[:result][1][:start_time] = nil
+      competitor[:result][1][:finish_time] = nil
+      competitor[:result][1][:result_time] = nil
+    end
+    save_info!
+  end
+  def mark_dnf!(competitor, day)
+    if type == "two runs combined"
+      index = day - 1
+      competitor[:result] ||= [new_info_hash,new_info_hash]
+    else
+      competitor[:result] ||= [new_info_hash]
+      index = 0
+    end
+    competitor[:result][index][:status] = :dnf
+    competitor[:result][index][:finish_time] = nil
+    competitor[:result][index][:result_time] = nil
+    if type == "two runs combined" and day == 1
+      competitor[:result][1][:status] = :dns
+      competitor[:result][1][:start_time] = nil
+      competitor[:result][1][:finish_time] = nil
+      competitor[:result][1][:result_time] = nil
+    end
+    save_info!
+  end
+  def mark_complete!(competitor, day)
+    if type == "two runs combined"
+      index = day - 1
+    else
+      index = 0
+    end
+    competitor[:result][index][:status] = :completed
+    competitor[:result][index][:finish_time] = Time.now
+    timediff = competitor[:result][index][:finish_time] - competitor[:result][index][:start_time]
+    competitor[:result][index][:result_time] = sprintf("%1d:%02d:%02d.%1d",timediff/60/60, timediff / 60 % 60, timediff % 60, timediff * 10 % 10 )
+    save_info!
+  end
+  def update_result(competitor, day, new_status)
+  end
+  
   def result(competitor, day)
     if type == "two runs combined" and day != 0
       if competitor[:result] and competitor[:result][day - 1] and competitor[:result][day - 1] != :none
-        if competitor[:result][day - 1] != :completed
+        if competitor[:result][day - 1][:status] != :completed
           competitor[:result][day - 1][:status]
         else
-          c1[:result][0][:result_time]
+          competitor[:result][0][:result_time]
         end
       else
         nil
@@ -139,11 +192,20 @@ class Competition
       final_result competitor
     end
   end
+  
+  def is_time_string(s)
+    if s.nil?
+      false
+    else
+      s.to_s.match /\d:\d\d:\d\d.\d/
+    end
+  end
+  
   def compare_provisional_results(p1,p2)
-    if p1.class == DateTime 
-      p2.class == DateTime ? p1 <=> p2 : 1
-    elsif p2.class == DateTime
-      -1
+    if is_time_string(p1)
+      is_time_string(p2) ? p1 <=> p2 : -1
+    elsif is_time_string(p2)
+      1
     elsif p1.nil?
       p2.nil? ? 0 :1
     elsif p2.nil?
@@ -170,7 +232,7 @@ class Competition
   end
 private
   def start(competitor, day, timestamp)
-    timestamp ||= DateTime.now
+    timestamp ||= Time.now
     if type == "two runs combined"
       index = day - 1
       competitor[:result] ||= [new_info_hash,new_info_hash]
@@ -180,7 +242,7 @@ private
     end
     competitor[:result][index] = {
       status: :started,
-      start_time: timestamp || DateTime.now,
+      start_time: timestamp || Time.now,
       finish_time: nil,
       result_time: nil
     }
@@ -219,7 +281,7 @@ private
         result = nil
       end
     end
-    puts "Provisional result for #{competitor[:name]} in #{name} #{"only for first day" if only_first_day} is #{result}"
+    #puts "Provisional result for #{competitor[:name]} in #{name} #{"only for first day" if only_first_day} is #{result}"
     result
   end
 end
