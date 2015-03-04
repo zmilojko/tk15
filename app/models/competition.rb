@@ -174,9 +174,25 @@ class Competition
     competitor[:result][index][:result_time] = sprintf("%1d:%02d:%02d.%1d",timediff/60/60, timediff / 60 % 60, timediff % 60, timediff * 10 % 10 )
     save_info!
   end
-  def update_result(competitor, day, new_status)
+  def update_result!(competitor, new_status, day)
+    puts "UDPATING #{competitor[:name]} to #{new_status} on day #{day}"
+    new_status.downcase!
+    if type == "two runs combined"
+      index = day - 1
+      competitor[:result] ||= [new_info_hash,new_info_hash]
+    else
+      index = 0
+      competitor[:result] ||= [new_info_hash]
+    end
+    if "started dns dnf none".split.include? new_status 
+      competitor[:result][index][:status] = new_status.to_sym
+    elsif is_time_string(new_status)
+      competitor[:result][index][:status] = :completed
+      competitor[:result][index][:result_time] = new_status
+    end
+    save_info!
   end
-  
+
   def result(competitor, day)
     if type == "two runs combined" and day != 0
       if competitor[:result] and competitor[:result][day - 1] and competitor[:result][day - 1] != :none
@@ -192,7 +208,7 @@ class Competition
       final_result competitor
     end
   end
-  
+
   def is_time_string(s)
     if s.nil?
       false
@@ -200,7 +216,7 @@ class Competition
       s.to_s.match /\d:\d\d:\d\d.\d/
     end
   end
-  
+
   def compare_provisional_results(p1,p2)
     if is_time_string(p1)
       is_time_string(p2) ? p1 <=> p2 : -1
@@ -211,13 +227,13 @@ class Competition
     elsif p2.nil?
       -1
     elsif p1.to_sym == :dns
-      p2.to_sym == :dns ? 0 : -1
+      p2.to_sym == :dns ? 0 : 1
     elsif p2.to_sym == :dns
-      1
+      -1
     elsif p1.to_sym == :dnf
-      p2.to_sym == :dnf ? 0 : -1
+      p2.to_sym == :dnf ? 0 : 1
     elsif p2.to_sym == :dnf
-      1
+      -1
     elsif p1.to_sym == :started
       if p2.to_sym != :started
         -1

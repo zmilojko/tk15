@@ -10,9 +10,11 @@ class CompetitionsController < ApplicationController
   # GET /competitions.json
   def index
     @competitions = Competition.all.order_by(order_number: :asc)
-    @total_competitors = @competitions.inject(0){|sum,x| sum + (x[:list].nil? ? 0 : x[:list].length) }
     respond_to do |format|
-      format.html { render :index }
+      format.html do
+        @total_competitors = @competitions.inject(0){|sum,x| sum + (x[:list].nil? ? 0 : x[:list].length) }
+        render :index
+      end
       format.json { render json: @competitions.as_json }
     end
   end
@@ -172,10 +174,9 @@ class CompetitionsController < ApplicationController
   end
   def update_result
     check_admin
-    puts "#{@competitor[:name]} UDPATE #{params}."
-    #@competition.update_status! @competitor, params[:day].to_i, params[:day].to_i
+    @competition.update_result! @competitor, params[:new_status], params[:day].to_i
     respond_to do |format|
-      format.html { redirect_to competitions_url, notice: "#{@competitor[:name]} updated status" }
+      format.html { redirect_to competitions_url, notice: "#{@competitor[:name]} updated status to #{params[:new_status]}" }
       format.json { head :no_content }
     end
   end
@@ -186,9 +187,7 @@ private
     end
     
     def set_competitor
-      puts "Looking for #{params[:userid]} in #{@competition.name}"
       @competitor = @competition[:list].select{ |c| c[:id].to_s == params[:userid]}[0]
-      puts "found #{@competitor[:name]}"
     end
 
     # Never trust parameters from the scary internet, only allow the white list through.
