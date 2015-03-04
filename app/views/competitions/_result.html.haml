@@ -3,7 +3,7 @@
   -if active_list
     .form-group
       -if competition.state.to_sym == :active
-        -unless competition.result competitor, day
+        -unless competition.result(competitor, day) and competition.result(competitor, day) != :none
           = link_to("/admin/competitions/#{competition.id}/start/#{competitor[:id]}/#{day}", :method => :post) do
             %button.btn.btn-default.btn-sm start
           -if competition.can_start_plus_one!(competitor, day)
@@ -25,5 +25,5 @@
       %button.btn.btn-default.btn-sm Update
 %p
   %span=competition.result competitor, day
-  -if (competition.result(competitor, day) == :started) and (t=competitor[:result][day-1][:start_time])
+  -#if (competition.result(competitor, day) == :started) and (t=competitor[:result][day-1][:start_time])
     %span=t.strftime "%T.%1L"

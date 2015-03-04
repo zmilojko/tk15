@@ -51,33 +51,68 @@ class Competition
   end
   
   def timestamp_from_timestring ts
-    ts[/(\d):(\d\d):(\d\d).(\d)/,1].to_i*60*60 + 
-      ts[/(\d):(\d\d):(\d\d).(\d)/,2].to_i*60 + 
-      ts[/(\d):(\d\d):(\d\d).(\d)/,3].to_i + 
-      ts[/(\d):(\d\d):(\d\d).(\d)/,4].to_i/10
+    ts[/(\d):(\d\d):(\d\d).(\d)/,1].to_f*60*60 + 
+      ts[/(\d):(\d\d):(\d\d).(\d)/,2].to_f*60 + 
+      ts[/(\d):(\d\d):(\d\d).(\d)/,3].to_f + 
+      ts[/(\d):(\d\d):(\d\d).(\d)/,4].to_f/10
   end
 
   def competitor_score(competitor)
     if type == "two runs combined"
+      if self[:list].none? {|c| c[:result] and c[:result][1] and c[:result][1][:status] and not "dns dns none".split.include?(c[:result][1][:status].to_s) }
+        index = 0
+        brackets = true
+      else
+        index = 1
+        brackets = false
+      end
     else
-      unless competitor[:result] and competitor[:result][0] and competitor[:result][0][:status]
+      index = 0
+      brackets = false
+    end
+      unless competitor[:result] and competitor[:result][index] and competitor[:result][index][:status] and competitor[:result][index][:status] != :none
         return nil
       end
-      if "started dns dnf".split.include? competitor[:result][0][:status].to_s
-        competitor[:result][0][:status].to_s
-      elsif competitor[:result][0][:status].to_sym == :completed
-        if competitor_position(competitor) == 1
-          competitor[:result][0][:result_time]
+      if "started dns dnf".split.include? competitor[:result][index][:status].to_s
+        res = competitor[:result][index][:status].to_s
+        if brackets
+          "(#{res})"
         else
-          timediff = timestamp_from_timestring(competitor[:result][0][:result_time]) - timestamp_from_timestring(self[:list][0][:result][0][:result_time])
+          res
+        end
+      elsif competitor[:result][index][:status].to_sym == :completed
+        if competitor_position(competitor) == 1
+          if index == 0
+            res = competitor[:result][index][:result_time]
+          else
+            restime = timestamp_from_timestring(competitor[:result][0][:result_time]) +
+                timestamp_from_timestring(competitor[:result][1][:result_time])
+            res = sprintf("%1d:%02d:%02d.%1d",restime/60/60, restime / 60 % 60, restime % 60, restime * 10 % 10 )
+          end
+          if brackets
+            "(#{res})"
+          else
+            res
+          end
+        else
+          time_mine = timestamp_from_timestring(competitor[:result][0][:result_time])
+          time_winner = timestamp_from_timestring(self[:list][0][:result][0][:result_time])
+          if index == 1
+            time_mine += timestamp_from_timestring(competitor[:result][1][:result_time])
+            time_winner += timestamp_from_timestring(self[:list][0][:result][1][:result_time])
+          end
+          timediff = time_mine - time_winner
           res = sprintf("%1d:%02d:%02d.%1d",timediff/60/60, timediff / 60 % 60, timediff % 60, timediff * 10 % 10 )
           res.gsub! /^[0\:]*/,""
-          "+ #{res}"
+          if brackets
+            "(+ #{res})"
+          else
+            "+ #{res}"
+          end
         end
       else
-        throw "again I forgot some state"
+        throw "again I forgot some state, competitor=#{competitor[:name]}, index = #{index}, brackets=#{brackets}, status=#{competitor[:result][index][:status]}"
       end
-    end
   end
   def current_run_info(competitor, day)
     if type == "two runs combined"
@@ -227,7 +262,7 @@ class Competition
         if competitor[:result][day - 1][:status] != :completed
           competitor[:result][day - 1][:status]
         else
-          competitor[:result][0][:result_time]
+          competitor[:result][day - 1][:result_time]
         end
       else
         nil
@@ -246,14 +281,17 @@ class Competition
   end
 
   def compare_provisional_results(p1,p2)
+    p1 = nil if p1.to_s == "none"
+    p2 = nil if p1.to_s == "none"
+
     if is_time_string(p1)
       is_time_string(p2) ? p1 <=> p2 : -1
     elsif is_time_string(p2)
       1
     elsif p1.nil?
-      p2.nil? ? 0 :1
+      p2.nil? ? 0 : "dns dnf".split.include?(p2.to_s) ? -1 : 1
     elsif p2.nil?
-      -1
+      "dns dnf".split.include?(p1.to_s) ? 1 : -1
     elsif p1.to_sym == :dns
       p2.to_sym == :dns ? 0 : 1
     elsif p2.to_sym == :dns
@@ -303,13 +341,22 @@ private
     if type == "two runs combined" and not only_first_day
       if competitor[:result] and competitor[:result][1][:status] != :none
         if competitor[:result][1][:status] == :completed
-          result = competitor[:result][0][:result_time] + competitor[:result][1][:result_time]
+          result = timestamp_from_timestring(competitor[:result][0][:result_time]) + timestamp_from_timestring(competitor[:result][1][:result_time])
+          result = sprintf("%1d:%02d:%02d.%1d",result/60/60, result / 60 % 60, result % 60, result * 10 % 10 )
+        elsif competitor[:result][1][:status] == :dns and competitor[:result][0][:status] != :dns
+          result = :dnf
         else
           result = competitor[:result][1][:status]
         end
       else
-        if competitor[:result] and competitor[:result][0][:status] != :none
-          result = :started
+        if competitor[:result] and competitor[:result][0][:status] != :none and competitor[:result][0][:status] != :completed
+          result = competitor[:result][0][:status]
+        elsif competitor[:result][0][:status] == :completed
+          if self[:list].none? {|c| c[:result] and c[:result][1] and c[:result][1][:status] and not "dns dns none".split.include?(c[:result][1][:status].to_s) }
+            result = competitor[:result][0][:result_time]
+          else
+            nil
+          end
         else
           result = nil
         end
