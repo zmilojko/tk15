@@ -1,11 +1,18 @@
-%h1 Listing competitions
 
 =form_tag("/admin/competitions/numbers", method: "post") do 
+
+  - if @competitions.any? {|c| c.state and c.state.to_sym == :active }
+    %h1 Active competitions
+    - @competitions.each do |competition|
+      -if competition.state and competition.state.to_sym == :active
+        = render 'manage', competition: competition, active_list: true
 
   -if user_signed_in? and current_user.admin?
     = link_to("/admin/competitions/organize", :method => :post) do
       %button.btn.btn-default Reorganize competitions
     = submit_tag "Update start numbers", {class: "btn btn-default"}
+
+  %h1 Listing competitions
 
   %p
     %span Total competitors:
@@ -36,13 +43,7 @@
     %br
     #span(style="font-weight: bold")= link_to 'New Competition', new_competition_path
 
-  - if @competitions.any? {|c| c.state and c.state.to_sym == :active }
-    %h2 Active competitions
-    - @competitions.each do |competition|
-      -if competition.state and competition.state.to_sym == :active
-        = render 'manage', competition: competition
-
-  %h2 Current startlists
+  %h1 Current startlists
   - @competitions.each do |competition|
     -unless competition[:list].nil?
-      =render 'manage', competition: competition
+      =render 'manage', competition: competition, active_list: false

@@ -7,19 +7,18 @@
   .col-xs-3.col-sm-2.col-lg-2 Name
   .col-xs-3.col-sm-4.col-lg-1 Club
   .col-xs-3.col-sm-5.col-lg-2 Dogs
-  -if competition.state and competition.state.to_sym == :active
-    -# temporarily ignoring day two
-    .col-xs-6 The race
-  -if competition.state and (competition.state.to_sym == :done or competition.state.to_sym == :closed)
+  -if competition.state and competition.had_started
     -if competition.type == "two runs combined"
-      .col-lg-1 Day 1 result
-      .col-lg-1 Day 2 result
-    .col-lg-1 Final result
+      .col-lg-2 Day 1
+      .col-lg-2 Day 2
+      .col-lg-1 Result
+    -else
+      .col-lg-2 Result
     .col-lg-1 Position
-- competition[:list].sort_by{|x| x[:num]}.each do |competitor|
+- competition[:list].each do |competitor|
   .row.competitor-info(style="border-top: solid 1px #ccc")
     .col-xs-3.col-sm-1.col-lg-1
-      -if user_signed_in? and current_user.admin?
+      -if user_signed_in? and current_user.admin? and not active_list
         .form-group
           =number_field_tag "number$#{competition.code}$#{competitor[:id]}", competitor[:num], {class: "form-control input-sm"}
       -else
@@ -27,3 +26,15 @@
     .col-xs-3.col-sm-2.col-lg-2= competitor[:name].titleize
     .col-xs-3.col-sm-4.col-lg-1= competitor[:club]
     .col-xs-3.col-sm-5.col-lg-2= competitor[:dogs]
+    -if competition.state and competition.had_started
+      -if competition.type == "two runs combined"
+        .col-lg-2= render 'result', competition: competition, competitor: competitor, day: 1
+        .col-lg-2= render 'result', competition: competition, competitor: competitor, day: 2
+        .col-lg-1= render 'result', competition: competition, competitor: competitor, day: 0
+      -else
+        .col-lg-2=render 'result', competition: competition, competitor: competitor, day: 0
+      .col-lg-1
+        =competition.competitor_position competitor
+        =competition.competitor_score competitor
+        
+        

@@ -171,7 +171,7 @@ class CompetitionsController < ApplicationController
             if competitor[:id].to_s == ident[2].to_s
               if competitor[:num].to_i != value.to_i
                 puts "Changing #{competitor[:name]} in #{competition[:code]} from #{competitor[:num]} to #{value}"
-                competitor[:num] = value
+                competitor[:num] = value.to_i
                 result += 1
                 changed = true
               end
@@ -179,7 +179,8 @@ class CompetitionsController < ApplicationController
             competitor
           end
           if changed
-            Competition.collection.find(_id: competition._id).update("$set" => { list: competition[:list]})
+            #following will sort the list by start number and save it
+            competition.sort!
           end
         end
       end
