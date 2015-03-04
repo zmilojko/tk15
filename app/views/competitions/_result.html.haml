@@ -1,2 +1,22 @@
 -# competition: competition, competitor: competitor, day: 1
--# current_run_info(competition, competitor)
+-if user_signed_in? and current_user.admin? and (day != 0 or competition.type != "two runs combined")
+  -if active_list
+    .form-group
+      -if competition.state.to_sym == :active
+        -#= link_to("/admin/competitions/organize", :method => :post) do
+        -unless competition.result competitor, day
+          %button.btn.btn-default.btn-sm Start
+          -if competition.can_start_plus_one!(competitor, day)
+            %button.btn.btn-default.btn-sm Start + 1
+          %button.btn.btn-default.btn-sm dns!
+        -if competition.result(competitor, day) == :started
+          %button.btn.btn-default.btn-sm Complete
+          %button.btn.btn-default.btn-sm Mark dnf
+      %form.form.form-inline
+        =text_field_tag "number$#{competition.code}$#{competitor[:id]}", competition.result(competitor, day), {class: "form-control input-sm"}
+        %button.btn.btn-default.btn-sm Update
+  -else
+    %form.form.form-inline
+      =text_field_tag "number$#{competition.code}$#{competitor[:id]}", competition.result(competitor, day), {class: "form-control input-sm"}
+      %button.btn.btn-default.btn-sm Update
+%p=competition.result competitor, day

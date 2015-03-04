@@ -1,22 +1,20 @@
+- if @competitions.any? {|c| c.state and c.state.to_sym == :active }
+  %h1 Active competitions
+  - @competitions.each do |competition|
+    -if competition.state and competition.state.to_sym == :active
+      = render 'manage', competition: competition, active_list: true
 
 =form_tag("/admin/competitions/numbers", method: "post") do 
-
-  - if @competitions.any? {|c| c.state and c.state.to_sym == :active }
-    %h1 Active competitions
-    - @competitions.each do |competition|
-      -if competition.state and competition.state.to_sym == :active
-        = render 'manage', competition: competition, active_list: true
-
-  -if user_signed_in? and current_user.admin?
-    = link_to("/admin/competitions/organize", :method => :post) do
-      %button.btn.btn-default Reorganize competitions
-    = submit_tag "Update start numbers", {class: "btn btn-default"}
-
   %h1 Listing competitions
 
   %p
     %span Total competitors:
     %strong=@total_competitors
+
+  -if user_signed_in? and current_user.admin?
+    = link_to("/admin/competitions/organize", :method => :post) do
+      %button.btn.btn-default Reorganize competitions
+    = submit_tag "Update start numbers", {class: "btn btn-default"}
 
   .row(style="font-weight: bold")
     -if user_signed_in? and current_user.admin?

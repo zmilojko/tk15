@@ -1,4 +1,8 @@
 %h3 #{competition.code} - #{competition.name}
+-if user_signed_in? and current_user.admin? and active_list and not competition.type == "two runs combined"
+  -if competition[:list] and competition[:list].all? {|competitor| competition.final_result(competitor).nil?}
+    = link_to("/admin/competitions/#{}/start_all", :method => :post) do
+      %button.btn.btn-default Start all
 %p
   %span Competitors:
   %strong=competition[:list].length
@@ -6,14 +10,20 @@
   .col-xs-3.col-sm-1.col-lg-1 Number
   .col-xs-3.col-sm-2.col-lg-2 Name
   .col-xs-3.col-sm-4.col-lg-1 Club
-  .col-xs-3.col-sm-5.col-lg-2 Dogs
+  -unless active_list
+    .col-xs-3.col-sm-5.col-lg-2 Dogs
   -if competition.state and competition.had_started
     -if competition.type == "two runs combined"
-      .col-lg-2 Day 1
-      .col-lg-2 Day 2
-      .col-lg-1 Result
+      -unless active_list
+        .col-lg-2 Day 1
+        .col-lg-2 Day 2
+        .col-lg-1 Result
+      -else
+        .col-lg-3 Day 1
+        .col-lg-3 Day 2
+        .col-lg-1 Result
     -else
-      .col-lg-2 Result
+      .col-lg-4 Result
     .col-lg-1 Position
 - competition[:list].each do |competitor|
   .row.competitor-info(style="border-top: solid 1px #ccc")
@@ -25,14 +35,19 @@
         = competitor[:num]
     .col-xs-3.col-sm-2.col-lg-2= competitor[:name].titleize
     .col-xs-3.col-sm-4.col-lg-1= competitor[:club]
-    .col-xs-3.col-sm-5.col-lg-2= competitor[:dogs]
+    -unless active_list
+      .col-xs-3.col-sm-5.col-lg-2= competitor[:dogs]
     -if competition.state and competition.had_started
       -if competition.type == "two runs combined"
-        .col-lg-2= render 'result', competition: competition, competitor: competitor, day: 1
-        .col-lg-2= render 'result', competition: competition, competitor: competitor, day: 2
-        .col-lg-1= render 'result', competition: competition, competitor: competitor, day: 0
+        -if active_list
+          .col-lg-3= render 'result', competition: competition, competitor: competitor, day: 1, active_list: active_list
+          .col-lg-3= render 'result', competition: competition, competitor: competitor, day: 2, active_list: active_list
+        -else
+          .col-lg-2= render 'result', competition: competition, competitor: competitor, day: 1, active_list: active_list
+          .col-lg-2= render 'result', competition: competition, competitor: competitor, day: 2, active_list: active_list
+        .col-lg-1= render 'result', competition: competition, competitor: competitor, day: 0, active_list: active_list
       -else
-        .col-lg-2=render 'result', competition: competition, competitor: competitor, day: 0
+        .col-lg-4=render 'result', competition: competition, competitor: competitor, day: 0, active_list: active_list
       .col-lg-1
         =competition.competitor_position competitor
         =competition.competitor_score competitor

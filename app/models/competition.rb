@@ -76,6 +76,18 @@ class Competition
     start competitor, day, timestamp
     save_info!
   end
+  def can_start_plus_one!(competitor, day)
+    if type == "two runs combined"
+      index = day - 1
+    else
+      index = 0
+    end
+    begin
+      (self[:list].select {|c| c[:num] = competitor[:num] - 1}[0][:result][index][:status]) == :started
+    rescue
+      false
+    end
+  end
   def start_plus_one!(competitor, day)
     if type == "two runs combined"
       index = day - 1
@@ -91,9 +103,9 @@ class Competition
     Competition.collection.find(_id: _id).update("$set" => { list: self[:list]})
   end
   def compare(c1, c2, only_first_day: false)
-    if provisional_result(c1,only_first_day: only_first_day) == provisional_result(c2,only_first_day: only_first_day)
+    if provisional_result(c1,only_first_day: only_first_day, comapring: true) == provisional_result(c2,only_first_day: only_first_day, comapring: true)
       # compare by start number, unless both have started
-      unless provisional_result(c1,only_first_day: only_first_day) == :started
+      unless provisional_result(c1,only_first_day: only_first_day, comapring: true) == :started
         c1[:num].to_i <=> c2[:num].to_i
       else
         if type == "two runs combined" and not only_first_day
@@ -107,7 +119,22 @@ class Competition
         end
       end
     else
-      provisional_result(c1,only_first_day: only_first_day) <=> provisional_result(c2,only_first_day: only_first_day)
+      provisional_result(c1,only_first_day: only_first_day, comapring: true) <=> provisional_result(c2,only_first_day: only_first_day, comapring: true)
+    end
+  end
+  def result(competitor, day)
+    if type == "two runs combined" and day != 0
+      if competitor[:result] and competitor[:result][day - 1] and competitor[:result][day - 1] != :none
+        if competitor[:result][day - 1] != :completed
+          competitor[:result][day - 1]
+        else
+          c1[:result][0][:result_time]
+        end
+      else
+        nil
+      end
+    else
+      final_result competitor
     end
   end
 private
@@ -133,7 +160,7 @@ private
       result_time: nil
     }
   end
-  def provisional_result(competitor,only_first_day: false)
+  def provisional_result(competitor,only_first_day: false, comapring: false)
     if type == "two runs combined" and not only_first_day
       if competitor[:result] and competitor[:result][1][:status] != :none
         if competitor[:result][1][:status] == :completed
