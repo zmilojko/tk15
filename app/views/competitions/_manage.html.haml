@@ -1,7 +1,7 @@
 %h3 #{competition.code} - #{competition.name}
 -if user_signed_in? and current_user.admin? and active_list and not competition.type == "two runs combined"
   -if competition[:list] and competition[:list].all? {|competitor| competition.final_result(competitor).nil?}
-    = link_to("/admin/competitions/#{}/start_all", :method => :post) do
+    = link_to("/admin/competitions/#{competition.id}/start_all", :method => :post) do
       %button.btn.btn-default Start all
 %p
   %span Competitors:

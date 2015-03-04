@@ -3,20 +3,27 @@
   -if active_list
     .form-group
       -if competition.state.to_sym == :active
-        -#= link_to("/admin/competitions/organize", :method => :post) do
         -unless competition.result competitor, day
-          %button.btn.btn-default.btn-sm Start
+          = link_to("/admin/competitions/#{competition.id}/start/#{competitor[:id]}/#{day}", :method => :post) do
+            %button.btn.btn-default.btn-sm Start
           -if competition.can_start_plus_one!(competitor, day)
-            %button.btn.btn-default.btn-sm Start + 1
-          %button.btn.btn-default.btn-sm dns!
+            = link_to("/admin/competitions/#{competition.id}/start1/#{competitor[:id]}/#{day}", :method => :post) do
+              %button.btn.btn-default.btn-sm Start + 1
+          = link_to("/admin/competitions/#{competition.id}/mark_dns/#{competitor[:id]}/#{day}", :method => :post) do
+            %button.btn.btn-default.btn-sm dns!
         -if competition.result(competitor, day) == :started
-          %button.btn.btn-default.btn-sm Complete
-          %button.btn.btn-default.btn-sm Mark dnf
-      %form.form.form-inline
+          = link_to("/admin/competitions/#{competition.id}/mark_complete/#{competitor[:id]}/#{day}", :method => :post) do
+            %button.btn.btn-default.btn-sm Complete
+          = link_to("/admin/competitions/#{competition.id}/mark_dnf/#{competitor[:id]}/#{day}", :method => :post) do
+            %button.btn.btn-default.btn-sm Mark dnf
+      =form_tag("/admin/competitions/#{competition.id}/update_result/#{competitor[:id]}/#{day}", method: "post", class: "form form-inline") do 
         =text_field_tag "number$#{competition.code}$#{competitor[:id]}", competition.result(competitor, day), {class: "form-control input-sm"}
         %button.btn.btn-default.btn-sm Update
   -else
-    %form.form.form-inline
+    =form_tag("/admin/competitions/#{competition.id}/update_result/#{competitor[:id]}/#{day}", method: "post", class: "form form-inline") do 
       =text_field_tag "number$#{competition.code}$#{competitor[:id]}", competition.result(competitor, day), {class: "form-control input-sm"}
       %button.btn.btn-default.btn-sm Update
-%p=competition.result competitor, day
+%p
+  %span=competition.result competitor, day
+  -if (competition.result(competitor, day) == :started) and (t=competitor[:result][day-1][:start_time])
+    %span=t.strftime "%T.%1L"

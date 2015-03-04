@@ -69,7 +69,7 @@ class Competition
     end
   end
   def start_all!( day)
-    self[:list].each { |competitor| start competition, competitor, day }
+    self[:list].each { |competitor| start competitor, day, nil }
     save_info!
   end
   def start!(competitor, day, timestamp)
@@ -83,7 +83,7 @@ class Competition
       index = 0
     end
     begin
-      (self[:list].select {|c| c[:num] = competitor[:num] - 1}[0][:result][index][:status]) == :started
+      (self[:list].select {|c| c[:num] == competitor[:num] - 1}[0][:result][index][:status]) == :started
     rescue
       false
     end
@@ -94,7 +94,7 @@ class Competition
     else
       index = 0
     end
-    start! competitor, day, self[:list].select {|c| c[:num] = competitor[:num] - 1}[0][:result][index][:start_time]
+    start! competitor, day, self[:list].select {|c| c[:num] == competitor[:num] - 1}[0][:result][index][:start_time]
   end
   def final_result(competitor)
     provisional_result(competitor)
@@ -103,7 +103,8 @@ class Competition
     Competition.collection.find(_id: _id).update("$set" => { list: self[:list]})
   end
   def compare(c1, c2, only_first_day: false)
-    if provisional_result(c1,only_first_day: only_first_day, comapring: true) == provisional_result(c2,only_first_day: only_first_day, comapring: true)
+    if compare_provisional_results(provisional_result(c1,only_first_day: only_first_day, comapring: true), 
+                                   provisional_result(c2,only_first_day: only_first_day, comapring: true)) == 0
       # compare by start number, unless both have started
       unless provisional_result(c1,only_first_day: only_first_day, comapring: true) == :started
         c1[:num].to_i <=> c2[:num].to_i
@@ -119,14 +120,15 @@ class Competition
         end
       end
     else
-      provisional_result(c1,only_first_day: only_first_day, comapring: true) <=> provisional_result(c2,only_first_day: only_first_day, comapring: true)
+      compare_provisional_results(provisional_result(c1,only_first_day: only_first_day, comapring: true),
+                                  provisional_result(c2,only_first_day: only_first_day, comapring: true))
     end
   end
   def result(competitor, day)
     if type == "two runs combined" and day != 0
       if competitor[:result] and competitor[:result][day - 1] and competitor[:result][day - 1] != :none
         if competitor[:result][day - 1] != :completed
-          competitor[:result][day - 1]
+          competitor[:result][day - 1][:status]
         else
           c1[:result][0][:result_time]
         end
@@ -137,12 +139,43 @@ class Competition
       final_result competitor
     end
   end
+  def compare_provisional_results(p1,p2)
+    if p1.class == DateTime 
+      p2.class == DateTime ? p1 <=> p2 : 1
+    elsif p2.class == DateTime
+      -1
+    elsif p1.nil?
+      p2.nil? ? 0 :1
+    elsif p2.nil?
+      -1
+    elsif p1.to_sym == :dns
+      p2.to_sym == :dns ? 0 : -1
+    elsif p2.to_sym == :dns
+      1
+    elsif p1.to_sym == :dnf
+      p2.to_sym == :dnf ? 0 : -1
+    elsif p2.to_sym == :dnf
+      1
+    elsif p1.to_sym == :started
+      if p2.to_sym != :started
+        -1
+      else
+        0
+      end
+    elsif p2.to_sym == :started
+      1
+    else
+      throw "I forgot some possible state"
+    end
+  end
 private
   def start(competitor, day, timestamp)
-    timestamp = DateTime.now unless timestamp
+    timestamp ||= DateTime.now
     if type == "two runs combined"
       index = day - 1
+      competitor[:result] ||= [new_info_hash,new_info_hash]
     else
+      competitor[:result] ||= [new_info_hash]
       index = 0
     end
     competitor[:result][index] = {
@@ -164,27 +197,29 @@ private
     if type == "two runs combined" and not only_first_day
       if competitor[:result] and competitor[:result][1][:status] != :none
         if competitor[:result][1][:status] == :completed
-          competitor[:result][0][:result_time] + competitor[:result][1][:result_time]
+          result = competitor[:result][0][:result_time] + competitor[:result][1][:result_time]
         else
-          competitor[:result][1][:status]
+          result = competitor[:result][1][:status]
         end
       else
         if competitor[:result] and competitor[:result][0][:status] != :none
-          :started
+          result = :started
         else
-          nil
+          result = nil
         end
       end
     else
       if competitor[:result] and competitor[:result][0][:status] != :none
         if competitor[:result][0][:status] == :completed
-          competitor[:result][0][:result_time]
+          result = competitor[:result][0][:result_time]
         else
-          competitor[:result][0][:status]
+          result = competitor[:result][0][:status]
         end
       else
-        nil
+        result = nil
       end
     end
+    puts "Provisional result for #{competitor[:name]} in #{name} #{"only for first day" if only_first_day} is #{result}"
+    result
   end
 end

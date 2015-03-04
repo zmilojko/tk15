@@ -1,5 +1,9 @@
 class CompetitionsController < ApplicationController
-  before_action :set_competition, only: [:show, :edit, :update, :destroy, :next_state]
+  before_action :set_competition, only: [:show, :edit, :update, :destroy, :next_state,
+                                         :start_all, :start, :start1, :mark_dns, :mark_dnf,
+                                         :mark_complete, :update_result]
+  before_action :set_competitor, only: [:start, :start1, :mark_dns, :mark_dnf,
+                                         :mark_complete, :update_result]
   before_action :authenticate_user!, except: [:show, :index]
 
   # GET /competitions
@@ -108,11 +112,36 @@ class CompetitionsController < ApplicationController
       format.json { head :no_content }
     end
   end
-
+  
+  def start_all
+    check_admin
+    puts "Starting all for competition #{@competition.name} on day #{params[:day]}"
+    @competition.start_all!(params[:day].to_i)
+    respond_to do |format|
+      format.html { redirect_to competitions_url, notice: "Mass start in #{@competition.name}." }
+      format.json { head :no_content }
+    end
+  end
+  
+  def start
+    check_admin
+    puts "Starting #{@competitor[:name]} for competition #{@competition.name} on day #{params[:day]}"
+    @competition.start! @competitor, params[:day].to_i, nil
+    respond_to do |format|
+      format.html { redirect_to competitions_url, notice: "#{@competitor[:name]} started in #{@competition.name}." }
+      format.json { head :no_content }
+    end
+  end
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_competition
       @competition = Competition.find(params[:id])
+    end
+    
+    def set_competitor
+      puts "Looking for #{params[:userid]} in #{@competition.name}"
+      @competitor = @competition[:list].select{ |c| c[:id].to_s == params[:userid]}[0]
+      puts "found #{@competitor[:name]}"
     end
 
     # Never trust parameters from the scary internet, only allow the white list through.

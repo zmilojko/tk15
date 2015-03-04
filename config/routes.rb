@@ -10,6 +10,13 @@ Rails.application.routes.draw do
       post 'organize', on: :collection
       post 'numbers', on: :collection
       post 'next_state', on: :member
+      post 'start_all', on: :member
+      post 'start/:userid/:day', on: :member, to: :start
+      post 'start1/:userid/:day', on: :member, to: :start_plus_one
+      post 'mark_dns/:userid/:day', on: :member, to: :mark_dns
+      post 'mark_dnf/:userid/:day', on: :member, to: :mark_dnf
+      post 'mark_complete/:userid/:day', on: :member, to: :mark_complete
+      post 'update_result/:userid/:day', on: :member, to: :update_result
     end
     resources :cms, as: 'cms_block', controller: 'cms_blocks'
     resources :users, as: 'users' do
