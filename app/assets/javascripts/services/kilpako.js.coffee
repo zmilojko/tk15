@@ -35,7 +35,7 @@
             if is_active_competition
               $timeout ->
                 service.startPolling()
-              , if service.should_poll_fast then 500 else 3000
+              , if service.should_poll_fast then 3000 else 10000
         .catch ->
           service.connection_Error = true
           $timeout ->
