@@ -209,10 +209,15 @@ private
       results = []
       # first, go through competitions and competitors, and check that each should be in the application
       Competition.each do |competition|
-        if competition[:list] and competition[:list].reject! { |competitor| 
-              res = User.find(competitor[:id])[:races].none? {|r| to_new_code(r).gsub("SM ","") == competition.code.gsub("SM ","")} 
-              results << "Removing #{competitor[:name]} from #{competition[:code]}" if res
-              res
+        if competition[:list] and competition[:list].reject! { |competitor|
+              begin
+                res = User.find(competitor[:id])[:races].none? {|r| to_new_code(r).gsub("SM ","") == competition.code.gsub("SM ","")} 
+                results << "Removing #{competitor[:name]} from #{competition[:code]}" if res
+                res
+              rescue
+                results << "Removing deleted user #{competitor[:name]} from #{competition[:code]}"
+                true
+              end
             }
           Competition.collection.find(_id: competition._id).update("$set" => { list: competition[:list]})
         end
