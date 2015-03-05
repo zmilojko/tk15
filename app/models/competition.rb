@@ -75,6 +75,9 @@ class Competition
       end
       if "started dns dnf".split.include? competitor[:result][index][:status].to_s
         res = competitor[:result][index][:status].to_s
+        if res == "dns" and index == 1 and competitor[:result][0][:status].to_s != "dns"
+          res = :dnf
+        end
         if brackets
           "(#{res})"
         else
