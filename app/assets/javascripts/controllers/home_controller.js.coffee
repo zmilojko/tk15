@@ -57,9 +57,6 @@
     $scope.checkCompetitions = ->
       kilpakoService.hasActiveToShow().then (has_active_to_show) ->
         $scope.has_active_to_show = has_active_to_show
-        unless $scope.has_active_to_show
-          if $location.url() == "/live"
-            $location.url("/results")
       kilpakoService.hasStartlistToShow().then (has_startlist_to_show) ->
         $scope.has_startlist_to_show = has_startlist_to_show
       kilpakoService.hasResultsToShow().then (has_results_to_show) ->
