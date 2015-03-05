@@ -4,7 +4,7 @@
     scope: true
     transclude: false
     controller: ['$scope', ($scope) ->
-      kilpakoService.getCompetitionInfo().then (data) ->
+      kilpakoService.competitionInfo().then (data) ->
         $scope.competition_info = data
       $scope.doShowCompetition = (c) ->
         c and c.state and c.state != "open"

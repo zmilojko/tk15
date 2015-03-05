@@ -1,5 +1,5 @@
 .startlist
-%p(ng-hide="competition_info") Please waiting, loading competition info.
+%p(ng-hide="competition_info") Please wait, loading competition info.
 .row.competition-startlist(ng-repeat="competition in competition_info | orderBy:'order_number' | filter:doShowCompetition")
   .col-xs-12
     .row

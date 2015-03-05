@@ -1,5 +1,7 @@
 @tk15_module.controller 'HomeController', [
-  '$scope', '$location', '$http', '$timeout', ($scope, $location, $http,$timeout) ->
+  '$scope', '$location', '$http', '$timeout', 'kilpakoService', 
+  ($scope, $location, $http,$timeout,kilpakoService) ->
+    kilpakoService.startPolling()
     $scope.modernWebBrowsers = [
       { raceGroup: 'reki', name: "Sp4 SM", desc: "Sp4 SM - Sprint 4 dogs", selected: false  },
       { raceGroup: 'reki', name: "Sp4J SM", desc: "Sp4J SM - Sprint 4 dogs juniors", selected: false  },
@@ -52,7 +54,33 @@
           $scope.alerts.push { type: 'danger', msg: reason.data.reason }
         else
           $scope.alerts.push { type: 'danger', msg: 'Oh snap! Something did not go well. If all other fails, try the phone.' }
+    $scope.checkCompetitions = ->
+      kilpakoService.hasActiveToShow().then (has_active_to_show) ->
+        $scope.has_active_to_show = has_active_to_show
+        unless $scope.has_active_to_show
+          if $location.url() == "LIVE"
+            $location.url("tulokset")
+      kilpakoService.hasStartlistToShow().then (has_startlist_to_show) ->
+        $scope.has_startlist_to_show = has_startlist_to_show
+      kilpakoService.hasResultsToShow().then (has_results_to_show) ->
+        $scope.has_results_to_show = has_results_to_show
+      $timeout ->
+        $scope.checkCompetitions()
+      , 200
+    $scope.checkCompetitions()
 ]
+
+.directive "blinker", ['$timeout', ($timeout) ->
+  restrict: 'A',
+  link: (scope, element, attributes) ->
+    blinker = ->
+      $timeout ->
+        element.toggleClass "blink-on"
+        blinker()
+      , 800
+    blinker()
+  ]
+    
     #many thanks to http://stackoverflow.com/questions/17063000/ng-model-for-input-type-file
 .directive "fileread", ->
     ret = 
