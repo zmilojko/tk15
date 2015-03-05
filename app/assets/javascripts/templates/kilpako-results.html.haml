@@ -1,6 +1,6 @@
 .startlist
 %p(ng-hide="competition_info") Please wait, loading competition info.
-.row.competition-startlist(ng-repeat="competition in competition_info | orderBy:'order_number' | filter:doShowCompetitionInStartlist")
+.row.competition-startlist(ng-repeat="competition in competition_info | orderBy:'order_number' | filter:doShowCompetitionInResults")
   .col-xs-12
     .row
       .col-xs-12

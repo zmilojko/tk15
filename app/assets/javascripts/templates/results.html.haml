@@ -1,12 +1,10 @@
 .container(ng-controller="HomeController" zt-full-size)
   .minitron
-    %h1 Lähtölista
+    %h1 Tulokset
   .row
     .col-sm-8
       = Haml::Engine.new(File.read("app/assets/javascripts/templates/menu.html.haml")).render
-      %div(cms-block="start-list-not-ready-info")
-      %hr
-      %kilpako-startlists(info-type="startlists")
+      %kilpako-startlists(info-type="results")
     .col-sm-4
       = Haml::Engine.new(File.read("app/assets/javascripts/templates/sponsors.html.haml")).render
   = Haml::Engine.new(File.read("app/assets/javascripts/templates/footer.html.haml")).render

@@ -5,10 +5,10 @@
     %a(href='/#/program') Osallistumis info ja aikataulu
   %li(role="presentation" ng-class="onPage('/startlist')")
     %a(href='/#/startlist') Lähtölista
-  %li(role="presentation" ng-class="onPage('/live')" blinker)
-    %a(href='/#/startlist') LIVE
-  %li(role="presentation" ng-class="onPage('/results')")
-    %a(href='/#/startlist') Tulokset
+  %li(role="presentation" ng-class="onPage('/live')" blinker ng-show="has_active_to_show")
+    %a(href='/#/live') LIVE
+  %li(role="presentation" ng-class="onPage('/results')" ng-show="has_results_to_show")
+    %a(href='/#/results') Tulokset
   %li(role="presentation" ng-class="onPage('/stadion')")
     %a(href='/#/stadion') Tapahtumapaikka
   %li(role="presentation" ng-class="onPage('/taivalkoski')")

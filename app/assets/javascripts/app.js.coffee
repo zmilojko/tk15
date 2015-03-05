@@ -39,6 +39,12 @@
     when('/apply', {
       templateUrl: 'apply.html',
     }).
+    when('/live', {
+      templateUrl: 'live.html',
+    }).
+    when('/results', {
+      templateUrl: 'results.html',
+    }).
     otherwise({
       templateUrl: '404.html',
     }) 
