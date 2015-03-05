@@ -4,15 +4,28 @@
   .col-xs-12
     .row
       .col-xs-12
-        %h3.competition-title {{competition.code}} - {{competition.name}}
-    .row.competitor-info(ng-repeat="competitor in competition.list | orderBy:'num'")
-      .col-xs-1.col-sm-1
-        {{competitor.num}}
-      .col-xs-11.col-sm-5.col-lg-3
-        {{competitor.name.titleize()}}
-      .col-xs-offset-2.col-xs-5.col-sm-offset-0.col-sm-3.col-md-3
-        {{competitor.club|limitTo:9}}
-      -#.hidden-xs.col-lg-4
-        {{competitor.dogs|limitTo:40}}
+        %h3.competition-title 
+          {{competition.code}} - {{competition.name}}
+          %span.unofficial(ng-show="compatition.state!='closed'") EPAVIRALINEN
+    .row(ng-show="competition.type=='two runs combined'")
+      .col-xs-12.col-md-6
+      .col-xs-4.col-sm-3.col-sm-offset-3.col-md-offset-0.col-md-2.score
+        Päivä 1
+      .col-xs-4.col-sm-3.col-md-2.score
+        Päivä 2
+      .col-xs-4.col-sm-3.col-md-2.score
+        Yhteistulos
+    .row.competitor-info(ng-repeat="competitor in competition.list")
+      .col-xs-1
+        {{$index + 1}}
+      .col-xs-11.col-sm-11.col-md-5
+        {{competitor.num}}. {{competitor.name.titleize()}}, {{competitor.club|limitTo:9}}
+      .col-xs-4.col-sm-3.col-sm-offset-3.col-md-offset-0.col-md-2.score(ng-show="competition.type=='two runs combined'")
+        {{competitor.score.day1}}
+      .col-xs-4.col-sm-3.col-md-2.score(ng-show="competition.type=='two runs combined'")
+        {{competitor.score.day2}}
+      .col-xs-4.col-sm-3.col-md-2.score
+        {{competitor.score.final}}
+.distance
     
   

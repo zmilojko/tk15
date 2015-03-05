@@ -160,6 +160,19 @@ class Competition
   end
   def save_info!
     sort!
+    self[:list].each do |competitor|
+      if type == "two runs combined"
+        competitor[:score] = {
+          day1: result(competitor, 1),
+          day2: result(competitor, 2),
+          final: competitor_score(competitor)
+        }
+      else
+        competitor[:score] = {
+          final: competitor_score(competitor)
+        }
+      end
+    end
     Competition.collection.find(_id: _id).update("$set" => { list: self[:list]})
   end
   def compare(c1, c2, only_first_day: false)
