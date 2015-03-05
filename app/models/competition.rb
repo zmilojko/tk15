@@ -178,26 +178,26 @@ class Competition
     end
     Competition.collection.find(_id: _id).update("$set" => { list: self[:list]})
   end
-  def compare(c1, c2, only_first_day: false)
-    if compare_provisional_results(provisional_result(c1,only_first_day: only_first_day, comapring: true), 
-                                   provisional_result(c2,only_first_day: only_first_day, comapring: true)) == 0
+  def compare(c1, c2, only_first_day = false)
+    if compare_provisional_results(provisional_result(c1), 
+                                   provisional_result(c2)) == 0
       # compare by start number, unless both have started
-      unless provisional_result(c1,only_first_day: only_first_day, comapring: true) == :started
+      unless provisional_result(c1) == :started
         c1[:num].to_i <=> c2[:num].to_i
       else
         if type == "two runs combined" and not only_first_day
           if c1[:result][1][:start_time] or c2[:result][1][:start_time]
             (c1[:result][1][:start_time] or 10.years.ago) <=> (c1[:result][1][:start_time] or 10.years.ago)
           else
-            self.compare c1, c2, only_first_day: true
+            self.compare c1, c2, true
           end
         else
           c1[:result][0][:start_time] <=> c2[:result][0][:start_time]
         end
       end
     else
-      compare_provisional_results(provisional_result(c1,only_first_day: only_first_day, comapring: true),
-                                  provisional_result(c2,only_first_day: only_first_day, comapring: true))
+      compare_provisional_results(provisional_result(c1),
+                                  provisional_result(c2))
     end
   end
   def mark_dns!(competitor, day)
@@ -353,8 +353,8 @@ private
       result_time: nil
     }
   end
-  def provisional_result(competitor,only_first_day: false, comapring: false)
-    if type == "two runs combined" and not only_first_day
+  def provisional_result(competitor)
+    if type == "two runs combined"
       if competitor[:result] and competitor[:result][1][:status] != :none
         if competitor[:result][1][:status] == :completed
           result = timestamp_from_timestring(competitor[:result][0][:result_time]) + timestamp_from_timestring(competitor[:result][1][:result_time])
