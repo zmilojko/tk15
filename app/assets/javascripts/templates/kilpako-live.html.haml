@@ -21,9 +21,9 @@
       .col-xs-11.col-sm-11.col-md-5
         {{competitor.num}}. {{competitor.name.titleize()}}, {{competitor.club|limitTo:9}}
       .col-xs-4.col-sm-3.col-sm-offset-3.col-md-offset-0.col-md-2.score(ng-show="competition.type=='two runs combined'")
-        {{competitor.score.day1}}
+        {{competitor.score.day1.replace("none","")}}
       .col-xs-4.col-sm-3.col-md-2.score(ng-show="competition.type=='two runs combined'")
-        {{competitor.score.day2}}
+        {{competitor.score.day2.replace("none","")}}
       .col-xs-4.col-sm-3.col-md-2.score
         {{competitor.score.final}}
 .distance

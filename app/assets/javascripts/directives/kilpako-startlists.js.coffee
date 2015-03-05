@@ -5,8 +5,13 @@
       infoType: '@'
     transclude: false
     controller: ['$scope', ($scope) ->
-      kilpakoService.competitionInfo().then (data) ->
-        $scope.competition_info = data
+      $scope.poll = ->
+        kilpakoService.competitionInfo().then (data) ->
+          $scope.competition_info = data
+        $timeout ->
+          $scope.poll()
+        , 200
+      $scope.poll()
       $scope.doShowCompetitionInStartlist = (c) ->
         c and c.state and ("ready active".indexOf(c.state) + 1)
       $scope.doShowCompetitionInLive = (c) ->

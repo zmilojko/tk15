@@ -367,7 +367,7 @@ private
       else
         if competitor[:result] and competitor[:result][0][:status] != :none and competitor[:result][0][:status] != :completed
           result = competitor[:result][0][:status]
-        elsif competitor[:result][0][:status] == :completed
+        elsif competitor[:result] and competitor[:result][0] and competitor[:result][0][:status] == :completed
           if self[:list].none? {|c| c[:result] and c[:result][1] and c[:result][1][:status] and not "dns dns none".split.include?(c[:result][1][:status].to_s) }
             result = competitor[:result][0][:result_time]
           else
