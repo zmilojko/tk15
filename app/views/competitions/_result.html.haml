@@ -23,7 +23,7 @@
     =form_tag("/admin/competitions/#{competition.id}/update_result/#{competitor[:id]}/#{day}", method: "post", class: "form form-inline") do 
       =text_field_tag "new_status", competition.result(competitor, day), {class: "form-control input-sm"}
       %button.btn.btn-default.btn-sm Update
-%p
+%p.score
   %span=competition.result competitor, day
   -#if (competition.result(competitor, day) == :started) and (t=competitor[:result][day-1][:start_time])
     %span=t.strftime "%T.%1L"

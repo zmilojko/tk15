@@ -1,47 +1,49 @@
-- if @competitions.any? {|c| c.state and c.state.to_sym == :active }
-  %h1 Active competitions
-  - @competitions.each do |competition|
-    -if competition.state and competition.state.to_sym == :active
-      = render 'manage', competition: competition, active_list: true
+-unless @print
+  - if @competitions.any? {|c| c.state and c.state.to_sym == :active }
+    %h1 Active competitions
+    - @competitions.each do |competition|
+      -if competition.state and competition.state.to_sym == :active
+        = render 'manage', competition: competition, active_list: true
 
-=form_tag("/admin/competitions/numbers", method: "post") do 
-  %h1 Listing competitions
+=form_tag("/admin/competitions/numbers", method: "post") do
+  -unless @print
+    %h1 Listing competitions
 
-  %p
-    %span Total competitors:
-    %strong=@total_competitors
+    %p
+      %span Total competitors:
+      %strong=@total_competitors
 
-  -if user_signed_in? and current_user.admin?
-    = link_to("/admin/competitions/organize", :method => :post) do
-      %button.btn.btn-default Reorganize competitions
-    = submit_tag "Update start numbers", {class: "btn btn-default"}
-
-  .row(style="font-weight: bold")
     -if user_signed_in? and current_user.admin?
-      .col-xs-3.col-sm-1 Order
-    .col-xs-3.col-sm-2 Code
-    .col-xs-3.col-sm-3 Name
-    .col-xs-3.col-sm-2 Type
-    .col-xs-3.col-sm-2 State
-  - @competitions.each do |competition|
-    .row(style="border-top: solid 1px #ccc")
+      = link_to("/admin/competitions/organize", :method => :post) do
+        %button.btn.btn-default Reorganize competitions
+      = submit_tag "Update start numbers", {class: "btn btn-default"}
+
+    .row(style="font-weight: bold")
       -if user_signed_in? and current_user.admin?
-        .col-xs-3.col-sm-1= competition.order_number
-      .col-xs-3.col-sm-2= link_to competition.code, edit_competition_path(competition)
-      .col-xs-3.col-sm-3= competition.name
-      .col-xs-3.col-sm-2= competition.type[0,12]
-      .col-xs-3.col-sm-2= competition.state or "open"
-      -if user_signed_in? and current_user.admin?
-        .hidden-xs.col-sm-2
-          -if competition.next_state
-            = link_to "Change to #{competition.next_state}", "/admin/competitions/#{competition._id}/next_state", :method => :post
-          = link_to 'Destroy', competition, :method => :delete, :data => { :confirm => 'Are you sure?' }
+        .col-xs-3.col-sm-1 Order
+      .col-xs-3.col-sm-2 Code
+      .col-xs-3.col-sm-3 Name
+      .col-xs-3.col-sm-2 Type
+      .col-xs-3.col-sm-2 State
+    - @competitions.each do |competition|
+      .row(style="border-top: solid 1px #ccc")
+        -if user_signed_in? and current_user.admin?
+          .col-xs-3.col-sm-1= competition.order_number
+        .col-xs-3.col-sm-2= link_to competition.code, edit_competition_path(competition)
+        .col-xs-3.col-sm-3= competition.name
+        .col-xs-3.col-sm-2= competition.type[0,12]
+        .col-xs-3.col-sm-2= competition.state or "open"
+        -if user_signed_in? and current_user.admin?
+          .hidden-xs.col-sm-2
+            -if competition.next_state
+              = link_to "Change to #{competition.next_state}", "/admin/competitions/#{competition._id}/next_state", :method => :post
+            = link_to 'Destroy', competition, :method => :delete, :data => { :confirm => 'Are you sure?' }
 
   -if user_signed_in? and current_user.admin?
     %br
     #span(style="font-weight: bold")= link_to 'New Competition', new_competition_path
 
-  %h1 Current startlists
+  %h1 Taivalsprintti 2015
   - @competitions.each do |competition|
     -unless competition[:list].nil?
       =render 'manage', competition: competition, active_list: false
