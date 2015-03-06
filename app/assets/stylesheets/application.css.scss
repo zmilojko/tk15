@@ -102,3 +102,10 @@ body {
   color: red;
   font-weight: bold;
 }
+
+@media print {
+  h3 {
+    page-break-before: always;
+    page-break-after: avoid;
+  }
+}
