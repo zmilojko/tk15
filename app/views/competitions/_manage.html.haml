@@ -4,51 +4,37 @@
     = link_to("/admin/competitions/#{competition.id}/start_all", :method => :post) do
       %button.btn.btn-default Start all
 %p
-  %span Competitors:
-  %strong=competition[:list].length
+  -unless @print
+    %span Competitors:
+    %strong=competition[:list].length
 .row(style="font-weight: bold")
-  .col-xs-3.col-sm-1.col-lg-1 Number
-  .col-xs-3.col-sm-2.col-lg-2 Name
-  .col-xs-3.col-sm-4.col-lg-1 Club
-  -unless active_list
-    .col-xs-3.col-sm-5.col-lg-2 Dogs
+  .col-xs-1 #
+  .col-xs-3.col-sm-3.col-lg-2 Nimi
   -if competition.state and competition.had_started
     -if competition.type == "two runs combined"
-      -unless active_list
-        .col-lg-2 Day 1
-        .col-lg-2 Day 2
-        .col-lg-1 Result
-      -else
-        .col-lg-3 Day 1
-        .col-lg-3 Day 2
-        .col-lg-1 Result
+      .col-xs-2.score Päivä 1
+      .col-xs-2.score Päivä 2
+      .col-xs-2.score Yhteissä
     -else
-      .col-lg-4 Result
-    .col-lg-1 Position
+      .col-xs-6.col-lg-4.score Aika
+    .col-xs-2.score Tulos
 - competition[:list].each do |competitor|
   .row.competitor-info(style="border-top: solid 1px #ccc")
-    .col-xs-3.col-sm-1.col-lg-1
+    .col-xs-1.col-sm-1.col-lg-1
       -if user_signed_in? and current_user.admin? and not active_list
         .form-group
           =number_field_tag "number$#{competition.code}$#{competitor[:id]}", competitor[:num], {class: "form-control input-sm"}
       -else
         = competitor[:num]
-    .col-xs-3.col-sm-2.col-lg-2= competitor[:name].titleize
-    .col-xs-3.col-sm-4.col-lg-1= competitor[:club]
-    -unless active_list
-      .col-xs-3.col-sm-5.col-lg-2= competitor[:dogs]
+    .col-xs-3.col-sm-3.col-lg-2= competitor[:name].titleize + ", #{competitor[:club]}"
     -if competition.state and competition.had_started
       -if competition.type == "two runs combined"
-        -if active_list
-          .col-lg-3= render 'result', competition: competition, competitor: competitor, day: 1, active_list: active_list
-          .col-lg-3= render 'result', competition: competition, competitor: competitor, day: 2, active_list: active_list
-        -else
-          .col-lg-2= render 'result', competition: competition, competitor: competitor, day: 1, active_list: active_list
-          .col-lg-2= render 'result', competition: competition, competitor: competitor, day: 2, active_list: active_list
-        .col-lg-1= render 'result', competition: competition, competitor: competitor, day: 0, active_list: active_list
+        .col-xs-2= render 'result', competition: competition, competitor: competitor, day: 1, active_list: active_list
+        .col-xs-2= render 'result', competition: competition, competitor: competitor, day: 2, active_list: active_list
+        .col-xs-2= render 'result', competition: competition, competitor: competitor, day: 0, active_list: active_list
       -else
-        .col-lg-4=render 'result', competition: competition, competitor: competitor, day: 0, active_list: active_list
-      .col-lg-1.score
+        .col-xs-6.col-lg-4=render 'result', competition: competition, competitor: competitor, day: 0, active_list: active_list
+      .col-xs-2.col-md-2.score
         =competition.competitor_score competitor
         
         

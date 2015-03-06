@@ -17,6 +17,7 @@ Rails.application.routes.draw do
       post 'mark_dnf/:userid/:day', on: :member, to: :mark_dnf
       post 'mark_complete/:userid/:day', on: :member, to: :mark_complete
       post 'update_result/:userid/:day', on: :member, to: :update_result
+      get 'print', on: :collection, to: :print
     end
     resources :cms, as: 'cms_block', controller: 'cms_blocks'
     resources :users, as: 'users' do

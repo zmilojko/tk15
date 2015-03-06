@@ -4,8 +4,13 @@ class CompetitionsController < ApplicationController
                                          :mark_complete, :update_result]
   before_action :set_competitor, only: [:start, :start_plus_one, :mark_dns, :mark_dnf,
                                          :mark_complete, :update_result]
-  before_action :authenticate_user!, except: [:show, :index]
+  before_action :authenticate_user!, except: [:show, :index, :print]
 
+  
+  def print
+    @print = true
+    index
+  end
   # GET /competitions
   # GET /competitions.json
   def index
