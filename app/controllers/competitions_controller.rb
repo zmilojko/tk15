@@ -230,6 +230,7 @@ private
       # second, go through all the users and their applied for races, and add them if they are not already added
       User.all.each do |user| user[:races].each do |c|
           competition = begin Competition.find_by(code: to_new_code(c)) rescue Competition.find_by(code: "SM #{to_new_code(c)}") end
+          competition[:list] ||= []
           if competition[:list].none? {|cc| cc[:id] == user.id}
             results << "Adding #{user[:name].titleize} to #{competition.code}"
             competition[:list] << {
