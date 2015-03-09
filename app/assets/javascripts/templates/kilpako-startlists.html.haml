@@ -14,5 +14,18 @@
         {{competitor.club|limitTo:9}}
       -#.hidden-xs.col-lg-4
         {{competitor.dogs|limitTo:40}}
-    
+.row.competition-startlist(ng-repeat="competition in competition_info | orderBy:'order_number' | filter:doShowCompetitionInStartlistDay2Results")
+  .col-xs-12
+    .row
+      .col-xs-12
+        %h3.competition-title 
+          {{competition.code}} - {{competition.name}}
+    .row.competitor-info(ng-repeat="competitor in competition.list")
+      .col-xs-1
+        {{competitor.num}}
+      .col-xs-11.col-sm-11.col-md-5
+        {{competitor.name.titleize()}}, {{competitor.club|limitTo:9}}
+      .col-xs-4.col-sm-3.col-md-2.score
+        {{competitor.score.final}}
+.distance    
   

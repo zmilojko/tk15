@@ -18,6 +18,8 @@
         c and c.state and ("active".indexOf(c.state) + 1)
       $scope.doShowCompetitionInResults = (c) ->
         c and c.state and ("done closed".indexOf(c.state) + 1)
+      $scope.doShowCompetitionInStartlistDay2Results = (c) ->
+        c and c.state and c.state=="done" and c.type=="two runs combined"
     ]
     templateUrl: (elem, attr) ->
       "kilpako-#{attr['infoType']}.html"
